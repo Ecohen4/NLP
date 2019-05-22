@@ -30,7 +30,9 @@ class GensimTopicModeler():
     def _remove_stopwords(self, corpus):
         stop_words = stopwords.words('english')
         stop_words.extend(['not', 'look', 'do', 'go', 'get', 'would', 'be', 's', 'say',
-                           'see', 'could', 'back', 'know', 'come'])
+                           'see', 'could', 'back', 'know', 'come', 
+                           'harry', 'hermione',
+                           'think', 'tell', 'take', 'make', 'want'])
 
         return [[word for word in doc if word not in stop_words] for doc in corpus]
         
@@ -55,8 +57,8 @@ class GensimTopicModeler():
             lemma_corpus.append([token.lemma_ for token in doc if token.pos_ in allowed_postags])
         return lemma_corpus
 
-    def _tokenize_corpus(self):
-        # add additional stop words to default NLTK stop words
+    def tokenize_corpus(self):
+        # Remove stopwords from corpus
         self.corpus = self._remove_stopwords(self.corpus)
 
         # Build bigram model from corpus
@@ -69,13 +71,12 @@ class GensimTopicModeler():
         self.corpus = self._remove_stopwords(self.corpus)
 
     def fit(self, num_topics):
-        # Tokenize corpus, create dictionary of tokens and tf matrix, then fit LDA model
-        self._tokenize_corpus()
+        #Create dictionary of tokens and tf matrix, then fit LDA model
 
         # Create Dictionary
         self.id2word = corpora.Dictionary(self.corpus)
 
-        # Term Document Frequency
+        # Term Document Frequency (bag of words)
         self.tdf = [self.id2word.doc2bow(text) for text in self.corpus]
 
         # Build LDA model
@@ -83,7 +84,7 @@ class GensimTopicModeler():
             print('Creating LDA model...')
         self.lda_model = gensim.models.ldamodel.LdaModel(corpus=self.tdf,
                                                 id2word=self.id2word,
-                                                num_topics=10, 
+                                                num_topics=num_topics, 
                                                 random_state=100,
                                                 update_every=1,
                                                 chunksize=100,
@@ -95,10 +96,23 @@ class GensimTopicModeler():
         if self.verbose == True:
             pprint(self.lda_model.print_topics())
 
+    def score(self):
+        # Compute Perplexity, a measure of how good the model is. Lower is better.
+        print('\nPerplexity: ', self.lda_model.log_perplexity(self.tdf))
+
+        # Compute Coherence Score, a different metric that better aligns with human
+        # comprehension.
+        coherence_model_lda = CoherenceModel(model=self.lda_model, 
+                                             texts=self.corpus, 
+                                             dictionary=self.id2word, 
+                                             coherence='c_v')
+        coherence_lda = coherence_model_lda.get_coherence()
+        print('\nCoherence Score: ', coherence_lda)
+
 def load_data_clean_text(file_path):
     df = pd.read_csv(file_path)
 
-    # remove single quotes, double quotes, puncuation, and convert to lower case
+    # remove single quotes, double quotes, punctuation, and convert to lower case
     df['extracted_text'] = df['extracted_text'].str.replace('"','')
     df['extracted_text'] = df['extracted_text'].str.replace("'",'')
     df['extracted_text'] = df['extracted_text'].str.replace('[^\w\s]', '')
@@ -114,7 +128,8 @@ def load_data_clean_text(file_path):
 def main():
     file_path = 'data/Harry_Potter_Clean.csv'
     corpus = load_data_clean_text(file_path)
-    gen_LDA = GensimTopicModeler(corpus, True)
+    gen_LDA = GensimTopicModeler(corpus, verbose=True)
+    gen_LDA.tokenize_corpus()
     gen_LDA.fit(10)
 
 if __name__ == "__main__":
