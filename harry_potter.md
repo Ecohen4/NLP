@@ -57,16 +57,16 @@ I am actually a huge fan of the Harry Potter books, but haven't read them lately
 As far as approaching this problem, I divided it into two main chunks: 
 
 **Text Summarization**
- - I did quite a bit of research before diving in, and learned that there are two main categories of text summarization techniques, **Extractive** and **Abstractive**. 
-    - Extractive Summarization: Methods rely on extracting several parts, such as phrases and sentences, from a corpus of text and stack them together to create a summary. Therefore, identifying the right sentences for summarization is of utmost importance in an extractive method.
-    - Abstractive Summarization: These methods use advanced NLP techniques to generate an entirely new summary. Some parts of this summary may not even appear in the original text.
+ - I did quite a bit of research before diving in, there are two main categories of text summarization techniques, **Extractive** and **Abstractive**. 
+    - Extractive Summarization: Methods rely on extracting several parts from a corpus of text, such as phrases and sentences, and stacking them together to create a summary. As such, identifying the right sentences for summarization is of utmost importance in an extractive method.
+    - Abstractive Summarization: These methods use advanced NLP techniques to generate an entirely new summary. Some parts of this summary may not even appear in the original text, as these methods simulate how humans would summarize text.
   - I chose to focus on extractive techniques for this project, as the models I researched that use abstracive summarization are primarily deep learning methods that have better results on smaller paragraphs, vs. the entire chapters that need to be summarized for this project. 
   - Below, I have presented several text summarization methodologies, and the methodology I consider the best has been implemented in the final version of the code. 
 
 **Topic Modeling**
 - For topic modeling, I chose to use Latent Dirichlet Allocation, due to its ease of interpretation, and the robust model the Gensim library contains. 
 - I also chose to use Gensim because it was out of my comfort zone, compared to sklearn, and I thought this would be a great opportunity to continue learning. 
-- NMF and SVD would potentially be valid techniques as well, and could be an area to explore further. 
+- NMF and SVD would potentially be valid techniques as well, and could be additional methods to explore further. 
 
 
 [Back to Top](#Table-of-Contents)
@@ -79,22 +79,27 @@ As far as approaching this problem, I divided it into two main chunks:
 - Reflection and Future Work
 
 # Overview of the Data
-- This dataset consists of the full extracted text of all seven of the Harry Potter books, and includes the following fields:
+- The dataset consists of the full extracted text of all seven of the Harry Potter books, and includes the following fields:
   - book_author: J.K. Rowling for all books (string)
   - book_name: Name of each book (string)
   - chapter: Chapter number (integer)
   - chapter_name: Name of chapter (string)
   - extracted_text: Entire text of the chapter (string)
-- There are 198 chapters total
-- Initial EDA of the dataset is as follows. Note the books are in the order of the initial .csv, which is not necessarily chronological.
+- There are 198 chapters total.
+- The last book in the series, 'Harry Potter and the Deathly Hallows', at ~178,000 words, is almost 2.5 times as long as the first book 'Harry Potter and the Philosophers Stone'.
 
-|   Book Name  | Total Chapters             | Total Word Count |  | Writers                     | Director      |   Percent Positive |   Percent Negative |
-|----:|:------------------|:----------|:----------------------------|:--------------|-------------------:|-------------------:|
-|Harry Potter and the Chamber of Secrets| 18 | 16-Jan-91 | Larry David, Jerry Seinfeld | Tom Cherones  |           0.32 |           0.25  |
-|   2 | The Pony Remark   | 30-Jan-91 | Larry David, Jerry Seinfeld | Tom Cherones  |           0.28     |           0.24     |
-|   8 | The Little Kicks  | 10-Oct-96 | Spike Feresten              | Andy Ackerman |           0.29 |           0.23 |
-|   2 | The Baby Shower   | 16-May-91 | Larry Charles               | Tom Cherones  |           0.24 |           0.23  |
-|   2 | The Jacket        | 6-Feb-91  | Larry David, Jerry Seinfeld | Tom Cherones  |           0.29 |           0.23 |
+The table below shows a summary of the dataset. 
+Note the books are in the same order as the .csv source, which is not necessarily chronological.
+
+| Book Name | Total Chapters | Total Word Count | Average Chapter Word Count | Average Word Length |
+|----:|:------------------|:----------|:----------------------------|:--------------|
+| Harry Potter and the Chamber of Secrets| 18 | 84,077 | 4,671 | 4.72 |
+| Harry Potter and the Deathly Hallows | 36 | 178,107| 4,947 | 4.62 |
+| Harry Potter and the Goblet of Fire | 37 | 178,312 | 4,819 | 4.56 |
+| Harry Potter and the Half Blood Prince | 30 | 162,797 | 5,427 | 4.65 |
+| Harry Potter and the Order of the Phoenix | 38 | 208,783 | 5,494 | 4.66 |
+| Harry Potter and the Philosophers Stone | 17 | 77,346 | 4,550 | 4.49 |
+| Harry Potter and the Prisoner of Azkaban | 22 | 104,661 | 4,757 | 4.61 |
 
 
 [Back to Top](#Table-of-Contents)
@@ -110,7 +115,7 @@ However, I set up the file ```hp_text_summarization.py``` to be quite dynamic, a
   - -length: The number of sentences to use in each chapter summary
   - -savetxt: Boolean that allows the user to save results to text file. If False, output is just printed to the terminal.
 
-Example of this in use:
+Example command line execution:
 ```
 python hp_text_summarization.py -filepath 'data/Harry_Potter_Clean.csv' -summarizer TextRankSummarizer -length 5 -savetxt True
 ```
@@ -257,3 +262,51 @@ From the chart above, it appeared that 14 topics resulted in a good balance betw
   '0.008*"wand" + 0.008*"voldemort" + 0.007*"think" + 0.006*"snape" + '
   '0.005*"dumbledore" + 0.005*"eye" + 0.005*"still" + 0.005*"tell" + '
   '0.005*"face" + 0.005*"hand"')]
+
+
+Topic Names:
+ - Topic 0: Voldemnort, Tom Riddle, and the Horcrux
+ - Topic 1: Wands, Eyes, and Dudley
+ - Topic 2: The Weasley's and Wizards
+ - Topic 3: Snape, Sirius, and Dumbledore
+ - Topic 4: Greyback, Scabior, and a Prisoner
+ - Topic 5: Hagrid, Ron, and Gryffindor
+ - Topic 6: Hagrid, Snape, and the Eye
+ - Topic 7: Professor Trelawney, Umbridge, and the Dream Oracle
+
+
+
+```
+  [(0,
+  '0.009*"voldemort" + 0.008*"riddle" + 0.005*"wizard" + 0.005*"horcrux" + '
+  '0.005*"prime_minister" + 0.005*"ask" + 0.005*"wand" + 0.004*"never" + '
+  '0.004*"dobby" + 0.004*"wormtail"'),
+ (1,
+  '0.009*"wand" + 0.006*"eye" + 0.006*"voldemort" + 0.006*"hand" + '
+  '0.006*"face" + 0.005*"dudley" + 0.005*"still" + 0.005*"door" + 0.005*"feel" '
+  '+ 0.004*"voice"'),
+ (2,
+  '0.008*"mrs_weasley" + 0.005*"wizard" + 0.005*"ron" + 0.005*"door" + '
+  '0.004*"ask" + 0.004*"fr" + 0.004*"time" + 0.004*"percy" + 0.004*"well" + '
+  '0.004*"eye"'),
+ (3,
+  '0.008*"snape" + 0.006*"sirius" + 0.005*"well" + 0.005*"dumbledore" + '
+  '0.005*"time" + 0.005*"ask" + 0.004*"give" + 0.004*"good" + 0.004*"voice" + '
+  '0.004*"leave"'),
+ (4,
+  '0.015*"greyback" + 0.005*"scabior" + 0.005*"prisoner" + 0.004*"dirk" + '
+  '0.004*"tent" + 0.002*"cellar" + 0.002*"griphook" + 0.002*"crouch" + '
+  '0.002*"snatcher" + 0.002*"sword"'),
+ (5,
+  '0.016*"hagrid" + 0.005*"ron" + 0.005*"time" + 0.005*"good" + 0.004*"hand" + '
+  '0.004*"gryffindor" + 0.004*"try" + 0.004*"team" + 0.004*"well" + '
+  '0.004*"wood"'),
+ (6,
+  '0.007*"hagrid" + 0.006*"snape" + 0.004*"eye" + 0.004*"face" + 0.004*"head" '
+  '+ 0.004*"ron" + 0.004*"malfoy" + 0.004*"time" + 0.004*"professor" + '
+  '0.004*"turn"'),
+ (7,
+  '0.005*"professor_trelawney" + 0.004*"umbridge" + 0.003*"dream_oracle" + '
+  '0.002*"trelawney" + 0.002*"inspect" + 0.002*"timetable" + 0.002*"moonstone" '
+  '+ 0.002*"divination" + 0.002*"inspection" + 0.001*"note_clipboard"')]
+  ```
