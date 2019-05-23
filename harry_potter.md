@@ -90,7 +90,7 @@ I am actually a huge fan of the Harry Potter books, but haven't read them lately
 The table below shows a summary of the dataset. 
 Note the books are in the same order as the .csv source, which is not necessarily chronological.
 
-| Book Name | Total Chapters | Total Word Count | Average Word Count per Chapter | Average Word Length |
+|Book Name  | Total Chapters | Total Word Count | Average Word Count per Chapter | Average Word Length |
 |----:|:------------------|:----------|:----------------------------|:--------------|
 | Harry Potter and the Chamber of Secrets| 18 | 84,077 | 4,671 | 4.72 |
 | Harry Potter and the Deathly Hallows | 36 | 178,107| 4,947 | 4.62 |
@@ -143,10 +143,10 @@ I used the following extractive summarization alogrithms on chapter 1 of Harry P
 
 **KL Summarizer**
 - He missed the castle, with its secret passageways and ghosts, his classes  though perhaps not Snape, the Potions master , the mail arriving by owl, eating banquets in the Great Hall, sleeping in his four-poster bed in the tower dormitory, visiting the gamekeeper, Hagrid, in his cabin next to the Forbidden Forest in the grounds, and, especially, Quidditch, the most popular sport in the wizarding world  six tall goal posts, four flying balls, and fourteen players on broomsticks .
-He had spent ten years with the Dursleys, never understanding why he kept making odd things happen without meaning to, believing the Dursleys’ story that he had got his scar in the car crash that had killed his parents.
-“And you?” said Uncle Vernon viciously to Harry.
-He crossed the lawn, slumped down on the garden bench, and sang under his breath:  “Happy birthday to me… happy birthday to me…”  No cards, no presents, and he would be spending the evening pretending not to exist.
-Harry knew he shouldn’t have risen to Dudley’s bait, but Dudley had said the very thing Harry had been thinking himself… maybe he didn’t have any friends at Hogwarts…  Wish they could see famous Harry Potter now, he thought savagely as he spread manure on the flower beds, his back aching, sweat running down his face.
+ - He had spent ten years with the Dursleys, never understanding why he kept making odd things happen without meaning to, believing the Dursleys’ story that he had got his scar in the car crash that had killed his parents.
+- “And you?” said Uncle Vernon viciously to Harry.
+- He crossed the lawn, slumped down on the garden bench, and sang under his breath:  “Happy birthday to me… happy birthday to me…”  No cards, no presents, and he would be spending the evening pretending not to exist.
+- Harry knew he shouldn’t have risen to Dudley’s bait, but Dudley had said the very thing Harry had been thinking himself… maybe he didn’t have any friends at Hogwarts…  Wish they could see famous Harry Potter now, he thought savagely as he spread manure on the flower beds, his back aching, sweat running down his face.
 
 **LexRank Summarizer**
 - Ever since Harry had come home for the summer holidays, Uncle Vernon had been treating him like a bomb that might go off at any moment, because Harry Potter wasn’t a normal boy.
@@ -171,14 +171,18 @@ Harry knew he shouldn’t have risen to Dudley’s bait, but Dudley had said the
 - “Remember, boy—one sound—”  Harry crossed to his bedroom on tiptoe slipped inside, closed the door, and turned to collapse on his bed.
 
 **Reduction Summarizer**
-
+- “All right,” said Harry, “all right…”  Uncle Vernon sat back down, breathing like a winded rhinoceros and watching Harry closely out of the corners of his small, sharp eyes.
+- Ever since Harry had come home for the summer holidays, Uncle Vernon had been treating him like a bomb that might go off at any moment, because Harry Potter wasn’t a normal boy.
+- Harry’s parents had died in Voldemort’s attack, but Harry had escaped with his lightning scar, and somehow—nobody understood why Voldemort’s powers had been destroyed the instant he had failed to kill Harry.
+- Harry had slipped through Voldemort’s clutches for a second time, but it had been a narrow escape, and even now, weeks later, Harry kept waking in the night, drenched in cold sweat, wondering where Voldemort was now, remembering his livid face, his wide, mad eyes—  Harry suddenly sat bolt upright on the garden bench.
+- Harry knew he shouldn’t have risen to Dudley’s bait, but Dudley had said the very thing Harry had been thinking himself… maybe he didn’t have any friends at Hogwarts…  Wish they could see famous Harry Potter now, he thought savagely as he spread manure on the flower beds, his back aching, sweat running down his face.
 
 **SumBasic Summarizer**
-What was it to the Dursleys if Harry went back to school without any of his homework done?
-“Excellent, Dudley,” said Uncle Vernon.
-At eight-fifteen—”  “I’ll announce dinner,” said Aunt Petunia.
-“I’ll be in my room, making no noise and pretending I’m not there,” he said.
-“Well done,” said Harry.
+- What was it to the Dursleys if Harry went back to school without any of his homework done?
+- “Excellent, Dudley,” said Uncle Vernon.
+- At eight-fifteen—”  “I’ll announce dinner,” said Aunt Petunia.
+- “I’ll be in my room, making no noise and pretending I’m not there,” he said.
+- “Well done,” said Harry.
 
 **TextRank Summarizer**
 - “All right,” said Harry, “all right…”  Uncle Vernon sat back down, breathing like a winded rhinoceros and watching Harry closely out of the corners of his small, sharp eyes.
@@ -187,17 +191,17 @@ At eight-fifteen—”  “I’ll announce dinner,” said Aunt Petunia.
 - Harry had slipped through Voldemort’s clutches for a second time, but it had been a narrow escape, and even now, weeks later, Harry kept waking in the night, drenched in cold sweat, wondering where Voldemort was now, remembering his livid face, his wide, mad eyes—  Harry suddenly sat bolt upright on the garden bench.
 - Harry knew he shouldn’t have risen to Dudley’s bait, but Dudley had said the very thing Harry had been thinking himself… maybe he didn’t have any friends at Hogwarts…  Wish they could see famous Harry Potter now, he thought savagely as he spread manure on the flower beds, his back aching, sweat running down his face.
 
-Overall, while this is entirely a judgement call, I decided to go with the () summarizer as the "default" in the code, as this had a good combination of descriptive yet different sentences, and seemed to represent the chapter as a whole well. That said, as mentioned above, the algorithm I created allows the user to select any of the eight summarization algorithms. 
+Overall, while this is entirely a judgement call, I decided to go with the TextRank summarizer as the "default" in the code, as this had a good combination of descriptive yet different sentences, and seemed to represent the chapter as a whole well. That said, as mentioned above, the script I created allows the user to select any of the eight summarization algorithms. 
 
-Either way, this would definitely allow someone who is not familiar with the Harry Potter series of books to get familiar with the content within each chapter very quickly. Also, while this algorithm was unable to create good titles for each chapter (I played around with several options but wasn't happy with any of them), in the next steps section, I outline and abstractive methodology that might be a good option for title creation.
+Either way, this would definitely allow someone who is not familiar with the Harry Potter series of books to get familiar with the content within each chapter very quickly. Also, while this algorithm was unable to create good titles for each chapter (I played around with several options but wasn't happy with any of them), in the 'Next Steps section below, I outline an abstractive methodology that might be a good option for title creation.
 
 [Back to Top](#Table-of-Contents)
 
 # Topic Modeling: LDA with Gensim/spaCy
 
-Latent Dirichlet Allocation is an unsupervised modeling technique, used to derive (k=num_topics) latent topics from corpuses of text (collections of documents). There are many examples of real-world use cases for this technique, such as search engines, text to speech, classifying social media users, and many more. 
+Latent Dirichlet Allocation is an unsupervised modeling technique, used to derive (k=num_topics) latent topics from corpuses of text (collections of documents). There are many examples of real-world use cases for this technique, such as document classification, search engine optimization, classifying social media users, and many more. 
 
-Gensim makes it very easy to create bigram and or trigram models, and spaCy's lemmitization feature allows one to take use the parts of speech they are interested in. In this case, I decided to only use nouns, adjectives, verbs, and adverbs, in order to reduce the amount of words that would be less useful to differentiate topics. 
+Gensim makes it very easy to create bigram and/or trigram models, and spaCy's lemmitization feature allows one to take use the parts of speech they are interested in. In this case, I decided to only use nouns, adjectives, verbs, and adverbs, in order to reduce the amount of words that would be less useful to differentiate topics. 
 
 The LDA algorithm takes an input X matrix (which is the term document frequecy matrix from the corpus) and creates phi and theta matrices, which relate to the input matrix as follows:
 
@@ -216,39 +220,55 @@ As with any unsupervised modeling technique, as there is nothing we are really "
 4. Create LDA model using Gensim.
 5. Look **manually** at most important key words for each topic, and if words are repeated often between topics, add to stopwords list, and re-run the LDA model.
 
-In order to have a more quantitative approach to evaluating an LDA model, I decided to focus on Gensim's "Coherence" score, which is basically of how well a topic model splits documents into easily definable topics. This has been shown to mirror human reasoning better than perplexity, so that is why I chose this metric. 
+In order to have a more quantitative approach to evaluating an LDA model, I decided to focus on Gensim's "Coherence" score, which is a measure how well an unsupervised model splits documents into easily definable topics. This has been shown to mirror human reasoning better than perplexity, so that is why I chose this metric. 
 
-The plot below shows how the coherence score changes as the number of topics increases. From this chart, it looks like the optimal number of topics is 8, so I decided to use that for the final model. However, there is always a balance between human interpretbility, and number of topics, and it can often be very difficult to assign "good" titles to a large number of topics, depending on the corpus.
+The plot below shows how the coherence score changes as the number of topics increases. From this chart, it looks like the optimal number of topics is 8, so I decided to use that for the final model. However, there is always a balance between human interpretability, and number of topics, and it can often be very difficult to assign "good" titles to a large number of topics, depending on the corpus.
 
 ![](images/coherence.png)
 
-
-Keywords with 8 topics, and these stopwords:
-
-Wordcloud with 8 topics
-
-
-For this model, I also went through many iterations of adding to the stop words list, and these are the additional stop words I used, in order to see more differentiation between the topics:
-
-```
-
-
-```
-
-
+The wordcloud below shows the 10 most important words in each of the 8 topics, with the size of the word corresponding to its overall importance within that topic.
 
 ![](images/wordcloud_1.png)
 
 
+As we can see, Harry and Hermoine are repeated in quite a few topics, so I decided to add them to the stop words list. This seemed a bit counterintuitive, since they are obviously integral parts of the story, but in terms of "differentiating" topics, I think it was necessary. 
+
+I went through several more iterations of adding words to the stop words list, and while this process could go on indefinitely, this is the wordcloud from the final LDA model I created, as well 
+Stopwords used:
+
+![](images/wordcloud_3.png)
 
 
-From the chart above, it appeared that 14 topics resulted in a good balance between number of topics and coherence score, as coherence score didn't increase much after that. As such, I then re-ran the gensim LDA model with 14 topics, and the gif below is a two-dimensional representation of those topics, along with the 30 most important words for each topic. As we can see, the bulk of the language used within Seinfeld episodes overlaps considerably, with the episodes that are quite different from the norm being shown as smaller topics that are further away from the first 5.
+The most important part of any topic model is really "are these topics easily interpretable by humans", in addition to ideally being well differentiated. 
 
-![](images/lda_gif.gif)
+Here is my attempt at manually assigning a title to each topic:
+ - Topic 0: Voldemnort, Tom Riddle, and the Horcrux
+ - Topic 1: Wands, Eyes, and Dudley
+ - Topic 2: The Weasley's and Wizards
+ - Topic 3: Snape, Sirius, and Dumbledore
+ - Topic 4: Greyback, Scabior, and a Prisoner
+ - Topic 5: Hagrid, Ron, and Gryffindor
+ - Topic 6: Hagrid, Snape, and the Eye
+ - Topic 7: Professor Trelawney, Umbridge, and the Dream Oracle
+
+For this model, the "topics" ended up being the important or primary characters within each document, vs. themes or plotlines. Such is the nature of unsupervised models, as in you never know exactly what you'll get, but I believe these results, combined with with the summarization techniques above, will give the user additional useful information about each chapter.
+
 
 [Back to Top](#Table-of-Contents)
 
-# 
+# Combining Summarization and Topic Modeling
+In order to leverage the results of both models, here is an example of a chapter-level summary that uses values from both. The combination of these results absolutely gives a great picture of the summary of the chapter, the most representative topics, and the important words from each topic.
+
+- **Book Name:** Harry Potter and the Chamber of Secrets
+- **Chapter Number:** 1
+- **Chapter Title:** "The Worst Birthday"
+- **Summary of Chapter (TextRank):**
+  - “All right,” said Harry, “all right…”  Uncle Vernon sat back down, breathing like a winded rhinoceros and watching Harry closely out of the corners of his small, sharp eyes.
+  - Ever since Harry had come home for the summer holidays, Uncle Vernon had been treating him like a bomb that might go off at any moment, because Harry Potter wasn’t a normal boy.
+  - Harry’s parents had died in Voldemort’s attack, but Harry had escaped with his lightning scar, and somehow—nobody understood why Voldemort’s powers had been destroyed the instant he had failed to kill Harry.
+  - Harry had slipped through Voldemort’s clutches for a second time, but it had been a narrow escape, and even now, weeks later, Harry kept waking in the night, drenched in cold sweat, wondering where Voldemort was now, remembering his livid face, his wide, mad eyes—  Harry suddenly sat bolt upright on the garden bench.
+  - Harry knew he shouldn’t have risen to Dudley’s bait, but Dudley had said the very thing Harry had been thinking himself… maybe he didn’t have any friends at Hogwarts…  Wish they could see famous Harry Potter now, he thought savagely as he spread manure on the flower beds, his back aching, sweat running down his face.
+- **Dominant Topics**: 
 
 
 [Back to Top](#Table-of-Contents)
@@ -345,10 +365,7 @@ Topic Names:
  - Topic 6: Hagrid, Snape, and the Eye
  - Topic 7: Professor Trelawney, Umbridge, and the Dream Oracle
 
-
-
-```
-  [(0,
+[(0,
   '0.009*"voldemort" + 0.008*"riddle" + 0.005*"wizard" + 0.005*"horcrux" + '
   '0.005*"prime_minister" + 0.005*"ask" + 0.005*"wand" + 0.004*"never" + '
   '0.004*"dobby" + 0.004*"wormtail"'),
@@ -380,4 +397,4 @@ Topic Names:
   '0.005*"professor_trelawney" + 0.004*"umbridge" + 0.003*"dream_oracle" + '
   '0.002*"trelawney" + 0.002*"inspect" + 0.002*"timetable" + 0.002*"moonstone" '
   '+ 0.002*"divination" + 0.002*"inspection" + 0.001*"note_clipboard"')]
-  ```
+

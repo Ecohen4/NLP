@@ -3,12 +3,13 @@ import numpy as np
 
 import argparse
 
+# sumy for tokenizing and stemming
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.nlp.stemmers import Stemmer
 from sumy.utils import get_stop_words
 
-# Various summarizer options from the sumy library
+# various summarizer options from the sumy library
 from sumy.summarizers.edmundson import EdmundsonSummarizer
 from sumy.summarizers.kl import KLSummarizer
 from sumy.summarizers.lex_rank import LexRankSummarizer 
@@ -20,7 +21,6 @@ from sumy.summarizers.text_rank import TextRankSummarizer
 
 from nltk.corpus import stopwords
 
-
 class TextSummarizer():
     '''
     Takes in a dataframe of the Harry Potter dataset, and summarizes each chapter using a 
@@ -31,7 +31,7 @@ class TextSummarizer():
 
     Inputs: Pandas Dataframe
 
-    Outputs: Txt file of summarizations or output printed to terminal
+    Outputs: Text file of summarizations or output printed to terminal
     '''
 
     def __init__(self, df):
@@ -50,13 +50,19 @@ class TextSummarizer():
     def _summarize(self, text, summarizer, num_sentences, bonus_words=['Harry']):
         '''
         Summarizes an individual chapter within the Harry Potter corpus.
-        The summary includes num_sentences total sentences
+        The summary includes num_sentences total sentences.
+
+        Inputs:
+        text - text of the chapter
+        summarizer - the chosen summarizer algorithm
+        num_sentences - number of sentences to use for summary
+        bonus_words - words to focus on if using Edmundson Summarizer
         '''
         # Initialize summarizer model and stopwords
         summarizer = summarizer(Stemmer(self.language))
         summarizer.stop_words = get_stop_words(self.language)
         
-        # Edmundson is special case that uses bonus_words and null_words
+        # Edmundson is special case that uses bonus_words, stigma words, and null_words
         if isinstance(summarizer, EdmundsonSummarizer):
             summarizer.bonus_words = bonus_words
             summarizer.stigma_words = ['zdfgthdvndadv']
@@ -70,12 +76,12 @@ class TextSummarizer():
         for sentence in summary:
             file_txt.write(str(sentence) + '\n') if save_to_txt == True else print(sentence)
 
-    def get_summaries(self, summarizer=LuhnSummarizer, num_sentences=5, save_to_txt=True):
+    def get_summaries(self, summarizer=TextRankSummarizer, num_sentences=5, save_to_txt=True):
         '''
-        Summarizes all chapters and either prints summaries to terminal or saves to text file.
+        Summarizes all chapters for each Harry Potter book, and either prints summaries to terminal,
+        or saves to text file, depending on boolean variable save_to_txt
         '''
-        file_txt = open("harry_potter_summaries.txt","w") if save_to_txt == True else False
-            
+        file_txt = open("harry_potter_summaries.txt","w") if save_to_txt == True else False 
 
         if type(summarizer) == str:
             summarizer = self.sumarizer_options_dict[summarizer]
@@ -149,10 +155,12 @@ def parse_arguments():
                         default='data/Harry_Potter_Clean.csv', 
                         help='File path/name of text to summarize')
     parser.add_argument('-summarizer', 
-                        default=LuhnSummarizer, 
+                        default=TextRankSummarizer, 
                         help='Summarizer to use for each chapter summary. \
                               Options are in self.sumarizer_options_dict')
-    parser.add_argument('-length', default=5, help='Number of summary sentences to return')
+    parser.add_argument('-length', 
+                        default=5, 
+                        help='Number of summary sentences to return')
     parser.add_argument('-savetxt', 
                         default=True, 
                         type=str2bool, 
