@@ -29,9 +29,13 @@ class TextSummarizer():
     algorithm to use, and to save to a txt file or print to the terminal to use through 
     command line argument parsing.
 
-    Inputs: Pandas Dataframe
+    Parameters
+    ----------
+    df: Pandas Dataframe containing Harry Potter .csv information
 
-    Outputs: Text file of summarizations or output printed to terminal
+    Outputs
+    ----------
+    Text file of summarizations or output printed to terminal
     '''
 
     def __init__(self, df):
@@ -52,11 +56,16 @@ class TextSummarizer():
         Summarizes an individual chapter within the Harry Potter corpus.
         The summary includes num_sentences total sentences.
 
-        Inputs:
-        text - text of the chapter
-        summarizer - the chosen summarizer algorithm
-        num_sentences - number of sentences to use for summary
-        bonus_words - words to focus on if using Edmundson Summarizer
+        Parameters
+        ----------
+        text: text of the chapter
+        summarizer: the chosen summarizer algorithm
+        num_sentences: number of sentences to use for summary
+        bonus_words: words to focus on if using Edmundson Summarizer
+
+        Returns
+        ----------
+
         '''
         # Initialize summarizer model and stopwords
         summarizer = summarizer(Stemmer(self.language))
@@ -142,6 +151,10 @@ def load_data(file_path):
         exit()
 
 def str2bool(v):
+    '''
+    Allows for the use of booleans in argument parsing.
+    Otherwise, booleans are simply treated as strings
+    '''
     if v.lower() in ('yes', 'true', 't', 'y', '1'):
         return True
     elif v.lower() in ('no', 'false', 'f', 'n', '0'):
@@ -152,7 +165,7 @@ def str2bool(v):
 def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('-filepath', 
-                        default='data/Harry_Potter_Clean.csv', 
+                        default='../data/Harry_Potter_Clean.csv', 
                         help='File path/name of text to summarize')
     parser.add_argument('-summarizer', 
                         default=TextRankSummarizer, 

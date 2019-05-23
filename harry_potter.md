@@ -3,17 +3,19 @@
 
 by Matt Devor
 
-# NLP
-
-Natural Language Processing (NLP) is a sub-field of machine learning that attempts to make human languages (e.g. English, French, Mandarin) machine readable and interpretable. 
-NLP poses notoriously difficult challenges, including the ambiguity of written text, the variability of meaning given context, the use of slang, idioms and abbreviations, the use of metaphor and analogy, and deciphering the true intent of a writer.
-
-The nuts and bolts of NLP include all of the following:
-1. Text extraction in a conistent and reliable format from multiple channels across multiple sources of truth.
-2. Text sanitization including removal of artifacts from web sources such as url-encoding, HTML markup, CSS tags and inline javascript.
-3. Lemmatization and stemming for normalization.
-4. Part-of-speech tagging, named-entity recognition, dependency parsing or other advanced linguistic models.
-5. Topic modeling, document clustering or other high-level abstractions.
+## Table of Contents
+- [Challenge](#challenge)
+- [Introduction](#introduction)
+- [Strategy and Process](#strategy-and-process)
+- [Overview of the Data](#overview-of-the-data)
+- [Text Summarization](#text-summarization)
+  * [Extractive Methodologies Tested](#extractive-methodologies-tested)
+      - [Results for each technique on Chapter 1 of Harry Potter and the Chamber of Secrets, "The Worst Birthday"](#results-for-each-technique-on-chapter-1-of-harry-potter-and-the-chamber-of-secrets-the-worst-birthday)
+- [Topic Modeling: LDA with Gensim/spaCy](#topic-modeling--lda-with-gensim-spacy)
+- [Combining Summarization and Topic Modeling](#combining-summarization-and-topic-modeling)
+- [Reflection and Next Steps](#reflection-and-next-steps)
+  * [Reflection](#reflection)
+  * [Next Steps](#next-steps)
 
 # Challenge
 Let's suppose you never read the Harry Potter series (my sincerest apologies).  
@@ -23,33 +25,7 @@ How could you leverage natural language processing to quickly extract topics, th
 Specifically, attempt to algorithmically assign a title and synopsis to each document (in this case let's consider each chapter as a document);
 and then repeat the process at the level of topics (that is, identify topics from the corpus of text, and assign a title and synopsis to each topic).
 
-Assume steps 1 & 2 have been completed for you with a robust ETL pipeline.  
-Tackle steps 3, 4 and 5, with emphasis on step 5.  
-The number of topics and how you present your findings is entirely up to you.  
-One catch -- please refrain from using the python library LDAvis -- we want to see how you build from the ground up.  
-That said, you may use any other machine learning or NLP library for underlying computations and/or transfer-learning. 
-
-## Guidelnes
-
-1. Do not copy source code from anywhere. We want to see how you would approach this problem yourself.
-2. Your code should be written primarily in Python.
-3. Your code should run.
-4. Don't worry about fancy optimizations, edge cases, bells or whistles.
-5. Timebox your efforts to a maximum of 8 hours.
-6. The result of your efforts should be a pull-request to this repository. 
-
-## Considerations
-Finally, one of the most important considerations for a full-stack data scientist is the ability to write production software. The best model is only as good as its deployment. Please use this opportunity to:
-
-1. Demonstrate your ability to write clean code that is robust, modular and well structured.
-3. Demonstrate software engineering best practices including self-documenting code, test-driven development, atomic-commits and source control.
-
-Oh and have fun!
-
-
-## Table of Contents
-
-
+[Back to Top](#Table-of-Contents)
 
 # Introduction
 I am actually a huge fan of the Harry Potter books, but haven't read them lately, so this project was a great refresher for me. I also think the models I created will generalize well to any corpus of text where one would like generate summaries and latent topics. As far as approaching this problem, I divided it into two main chunks: 
@@ -76,6 +52,8 @@ I am actually a huge fan of the Harry Potter books, but haven't read them lately
 - Topic Modeling: LDA with Gensim/spaCy
 - Combining Summarization and Topic Modeling
 - Reflection and Future Work
+
+[Back to Top](#Table-of-Contents)
 
 # Overview of the Data
 - The dataset consists of the full extracted text of all seven of the Harry Potter books, and includes the following fields:
@@ -133,7 +111,7 @@ I used the following extractive summarization alogrithms on chapter 1 of Harry P
 | SumBasic Summarizer | The SumBasic algorithm was developed in 2005 and uses only the word probability approach to determine sentence importance. It seems to tend to favor shorter sentences which in my mind are not very useful or descriptive of the chapter as a while.|
 |TextRank Summarizer| TextRank is a another graph-based summarization technique, based on Google'sPageRank, but was developed by a different group of people than LexRank. with keyword extractions in from document. Both algorithms are similar, but LexRank has an additional step of removing sentences that are highly duplicitous|
 
-#### Results for each technique on Chapter 1 of Harry Potter and the Chamber of Secrets, "The Worst Birthday".
+### Results for each Methodology on Chapter 1 of Harry Potter and the Chamber of Secrets, "The Worst Birthday":
 **Edmundson Summarizer**
 - The effect of this simple sentence on the rest of the family was incredible: Dudley gasped and fell off his chair with a crash that shook the whole kitchen; Mrs. Dursley gave a small scream and clapped her hands to her mouth; Mr. Dursley jumped to his feet, veins throbbing in his temples.
 - He missed the castle, with its secret passageways and ghosts, his classes  though perhaps not Snape, the Potions master , the mail arriving by owl, eating banquets in the Great Hall, sleeping in his four-poster bed in the tower dormitory, visiting the gamekeeper, Hagrid, in his cabin next to the Forbidden Forest in the grounds, and, especially, Quidditch, the most popular sport in the wizarding world  six tall goal posts, four flying balls, and fourteen players on broomsticks .
@@ -234,30 +212,33 @@ The wordcloud below shows the 10 most important words in each of the 8 topics, w
 As we can see, Harry and Hermoine are repeated in quite a few topics, so I decided to add them to the stop words list. This seemed a bit counterintuitive, since they are obviously integral parts of the story, but in terms of "differentiating" topics, I think it was necessary. 
 
 I went through several more iterations of adding words to the stop words list, and while this process could go on indefinitely, this is the wordcloud from the final LDA model I created, as well 
-Stopwords used:
+stopwords used:
+
+```Python
+stopwords = ['not', 'look', 'do', 'go', 'get', 'would', 'be', 's', 'say', 'see', 'could', 'back', 'know', 'come', 'harry', 'hermione', 'think', 'tell', 'take', 'make', 'want']
+```
 
 ![](images/wordcloud_3.png)
-
 
 The most important part of any topic model is really "are these topics easily interpretable by humans", in addition to ideally being well differentiated. 
 
 Here is my attempt at manually assigning a title to each topic:
  - Topic 0: Voldemnort, Tom Riddle, and the Horcrux
- - Topic 1: Wands, Eyes, and Dudley
- - Topic 2: The Weasley's and Wizards
+ - Topic 1: Wands, Eyes, Voldemort, and Dudley
+ - Topic 2: The Weasleys and Wizards
  - Topic 3: Snape, Sirius, and Dumbledore
  - Topic 4: Greyback, Scabior, and a Prisoner
  - Topic 5: Hagrid, Ron, and Gryffindor
- - Topic 6: Hagrid, Snape, and the Eye
+ - Topic 6: Hagrid, Snape, Ron, and Malfoy
  - Topic 7: Professor Trelawney, Umbridge, and the Dream Oracle
 
-For this model, the "topics" ended up being the important or primary characters within each document, vs. themes or plotlines. Such is the nature of unsupervised models, as in you never know exactly what you'll get, but I believe these results, combined with with the summarization techniques above, will give the user additional useful information about each chapter.
+For this model, the "topics" ended up mostly being the important or primary characters within each document, vs. themes or plotlines. Such is the nature of unsupervised models, as in you never know exactly what you'll get, but I believe these results, combined with with the summarization techniques above, will give the user additional useful information about each chapter.
 
 
 [Back to Top](#Table-of-Contents)
 
 # Combining Summarization and Topic Modeling
-In order to leverage the results of both models, here is an example of a chapter-level summary that uses values from both. The combination of these results absolutely gives a great picture of the summary of the chapter, the most representative topics, and the important words from each topic.
+In order to leverage the results of both models, here is an example of a chapter-level summary that uses values from both. The combination of these results absolutely gives a great picture of the contents of the chapter, the most representative topics, and the important words from each topic.
 
 - **Book Name:** Harry Potter and the Chamber of Secrets
 - **Chapter Number:** 1
@@ -268,133 +249,43 @@ In order to leverage the results of both models, here is an example of a chapter
   - Harry’s parents had died in Voldemort’s attack, but Harry had escaped with his lightning scar, and somehow—nobody understood why Voldemort’s powers had been destroyed the instant he had failed to kill Harry.
   - Harry had slipped through Voldemort’s clutches for a second time, but it had been a narrow escape, and even now, weeks later, Harry kept waking in the night, drenched in cold sweat, wondering where Voldemort was now, remembering his livid face, his wide, mad eyes—  Harry suddenly sat bolt upright on the garden bench.
   - Harry knew he shouldn’t have risen to Dudley’s bait, but Dudley had said the very thing Harry had been thinking himself… maybe he didn’t have any friends at Hogwarts…  Wish they could see famous Harry Potter now, he thought savagely as he spread manure on the flower beds, his back aching, sweat running down his face.
-- **Dominant Topics**: 
-
+- **Dominant Topics/Topic Composition**: 
+  - **Topic 1**: Wands, Eyes, Voldemort, and Dudley (71% of this chapter is comprised of Topic 1)
+    - The 6 most important words for this topic, and the amount they contribute to said topic are:
+      - 0.9% "wand"
+      - 0.6% "eye"
+      - 0.6% "Voldemort"
+      - 0.6% "hand"
+      - 0.6% "face"
+      - 0.5% "Dudley"
+  - **Topic 2**: The Weasleys and Wizards (19% of this chapter is comprised of Topic 2)
+    - The 6 most important words for this topic, and the amount they contribute to said topic are: 
+      - 0.8% "Mrs. Weasley"
+      - 0.5% "wizard"
+      - 0.5% "Ron"
+      - 0.5% "door"
+      - 0.4% "ask"
+      - 0.4% "time"
+  - **Topic 6**: Hagrid, Snape, Ron, and Malfoy (10% of this chapter is comprised of Topic 6)
+    - The 6 most important words for this topic, and the amount they contribute to said topic are: 
+      - 0.7% "Hagrid"
+      - 0.6% "Snape
+      - 0.4% "eye"
+      - 0.4% "face"
+      - 0.4% "Ron"
+      - 0.4% "Malfoy"
 
 [Back to Top](#Table-of-Contents)
 
-# Reflection and Future Work
+# Reflection and Next Steps
 ## Reflection
-- Overall, this was a really fun corpus to work with, and I was able to accurately summarize each chapter of Harry Potter
-- For topic modeling, LDA really focused on character 
+- Overall, this was a really fun corpus to work with, and I was able to accurately summarize each chapter of Harry Potter, while also allowing the user the flexibility to choose summarization algorithms and summary length.
+- For topic modeling, LDA really focused on important characters, vs. plot lines and themes, and a future direction there could be to continue removing stopwords, and re-running the LDA model.
+ - However, the combination of text summarization and the LDA model gives the user a great picture of the chapter as a whole.
 
-## Future Work
+## Next Steps
 - In terms of title creation for each chapter, I believe an abstrative deep learning methodology would be very interesting to implement.
-- Transfer learning might be helpful for this task, and while this model seems to have a very robust algorithm, I think it might need additional data to train with.
+- Specifically, a seq2seq LSTM model that can train on small paragraphs as the X values, and human created titles as y values, would be a great way to approach the problem of title creation.
+- Transfer learning might be helpful for this task as well, and while [this](https://ai.googleblog.com/2016/08/text-summarization-with-tensorflow.html) model seems to have a very robust algorithm, I don't think there is a trained model available to leverage, so would need to train on my own.
 
 [Back to Top](#Table-of-Contents)
-
-
-
-
-
-[(0,
-  '0.010*"fudge" + 0.007*"prime_minister" + 0.005*"wizard" + '
-  '0.005*"dumbledore" + 0.004*"think" + 0.004*"dementor" + 0.004*"frank" + '
-  '0.004*"witch" + 0.004*"ask" + 0.004*"riddle"'),
- (1,
-  '0.016*"slughorn" + 0.008*"ogden" + 0.007*"morfin" + 0.006*"gaunt" + '
-  '0.005*"muggle" + 0.005*"think" + 0.004*"krum" + 0.004*"wizard" + '
-  '0.004*"tent" + 0.003*"wear"'),
- (2,
-  '0.012*"hagrid" + 0.007*"greyback" + 0.007*"wand" + 0.006*"centaur" + '
-  '0.005*"shout" + 0.005*"fly" + 0.005*"death_eater" + 0.005*"malfoy" + '
-  '0.004*"face" + 0.004*"tree"'),
- (3,
-  '0.007*"think" + 0.006*"tell" + 0.005*"ron" + 0.005*"snape" + 0.005*"malfoy" '
-  '+ 0.005*"take" + 0.005*"make" + 0.005*"time" + 0.004*"hagrid" + '
-  '0.004*"want"'),
- (4,
-  '0.007*"dudley" + 0.006*"think" + 0.005*"take" + 0.005*"time" + 0.005*"make" '
-  '+ 0.004*"tell" + 0.004*"door" + 0.004*"well" + 0.004*"eye" + 0.004*"turn"'),
- (5,
-  '0.024*"hagrid" + 0.007*"think" + 0.006*"tell" + 0.006*"mrs_weasley" + '
-  '0.006*"ask" + 0.005*"want" + 0.005*"well" + 0.005*"ter" + 0.005*"take" + '
-  '0.004*"bill"'),
- (6,
-  '0.002*"portkey" + 0.002*"amos_diggory" + 0.001*"apparat" + '
-  '0.001*"stoatshead" + 0.001*"hill" + 0.001*"toffee" + 0.001*"mr_weasley" + '
-  '0.001*"ticket" + 0.001*"hilltop" + 0.001*"porridge"'),
- (7,
-  '0.008*"wand" + 0.008*"voldemort" + 0.007*"think" + 0.006*"snape" + '
-  '0.005*"dumbledore" + 0.005*"eye" + 0.005*"still" + 0.005*"tell" + '
-  '0.005*"face" + 0.005*"hand"')]
-
-
-# 9 Topics, Harry and Hermoine added to stop words.
-  [(0,
-  '0.010*"fudge" + 0.007*"prime_minister" + 0.005*"wizard" + '
-  '0.005*"dumbledore" + 0.004*"think" + 0.004*"dementor" + 0.004*"frank" + '
-  '0.004*"witch" + 0.004*"ask" + 0.004*"riddle"'),
- (1,
-  '0.016*"slughorn" + 0.008*"ogden" + 0.007*"morfin" + 0.006*"gaunt" + '
-  '0.005*"muggle" + 0.005*"think" + 0.004*"krum" + 0.004*"wizard" + '
-  '0.004*"tent" + 0.003*"wear"'),
- (2,
-  '0.012*"hagrid" + 0.007*"greyback" + 0.007*"wand" + 0.006*"centaur" + '
-  '0.005*"shout" + 0.005*"fly" + 0.005*"death_eater" + 0.005*"malfoy" + '
-  '0.004*"face" + 0.004*"tree"'),
- (3,
-  '0.007*"think" + 0.006*"tell" + 0.005*"ron" + 0.005*"snape" + 0.005*"malfoy" '
-  '+ 0.005*"take" + 0.005*"make" + 0.005*"time" + 0.004*"hagrid" + '
-  '0.004*"want"'),
- (4,
-  '0.007*"dudley" + 0.006*"think" + 0.005*"take" + 0.005*"time" + 0.005*"make" '
-  '+ 0.004*"tell" + 0.004*"door" + 0.004*"well" + 0.004*"eye" + 0.004*"turn"'),
- (5,
-  '0.024*"hagrid" + 0.007*"think" + 0.006*"tell" + 0.006*"mrs_weasley" + '
-  '0.006*"ask" + 0.005*"want" + 0.005*"well" + 0.005*"ter" + 0.005*"take" + '
-  '0.004*"bill"'),
- (6,
-  '0.002*"portkey" + 0.002*"amos_diggory" + 0.001*"apparat" + '
-  '0.001*"stoatshead" + 0.001*"hill" + 0.001*"toffee" + 0.001*"mr_weasley" + '
-  '0.001*"ticket" + 0.001*"hilltop" + 0.001*"porridge"'),
- (7,
-  '0.008*"wand" + 0.008*"voldemort" + 0.007*"think" + 0.006*"snape" + '
-  '0.005*"dumbledore" + 0.005*"eye" + 0.005*"still" + 0.005*"tell" + '
-  '0.005*"face" + 0.005*"hand"')]
-
-
-Topic Names:
- - Topic 0: Voldemnort, Tom Riddle, and the Horcrux
- - Topic 1: Wands, Eyes, and Dudley
- - Topic 2: The Weasley's and Wizards
- - Topic 3: Snape, Sirius, and Dumbledore
- - Topic 4: Greyback, Scabior, and a Prisoner
- - Topic 5: Hagrid, Ron, and Gryffindor
- - Topic 6: Hagrid, Snape, and the Eye
- - Topic 7: Professor Trelawney, Umbridge, and the Dream Oracle
-
-[(0,
-  '0.009*"voldemort" + 0.008*"riddle" + 0.005*"wizard" + 0.005*"horcrux" + '
-  '0.005*"prime_minister" + 0.005*"ask" + 0.005*"wand" + 0.004*"never" + '
-  '0.004*"dobby" + 0.004*"wormtail"'),
- (1,
-  '0.009*"wand" + 0.006*"eye" + 0.006*"voldemort" + 0.006*"hand" + '
-  '0.006*"face" + 0.005*"dudley" + 0.005*"still" + 0.005*"door" + 0.005*"feel" '
-  '+ 0.004*"voice"'),
- (2,
-  '0.008*"mrs_weasley" + 0.005*"wizard" + 0.005*"ron" + 0.005*"door" + '
-  '0.004*"ask" + 0.004*"fr" + 0.004*"time" + 0.004*"percy" + 0.004*"well" + '
-  '0.004*"eye"'),
- (3,
-  '0.008*"snape" + 0.006*"sirius" + 0.005*"well" + 0.005*"dumbledore" + '
-  '0.005*"time" + 0.005*"ask" + 0.004*"give" + 0.004*"good" + 0.004*"voice" + '
-  '0.004*"leave"'),
- (4,
-  '0.015*"greyback" + 0.005*"scabior" + 0.005*"prisoner" + 0.004*"dirk" + '
-  '0.004*"tent" + 0.002*"cellar" + 0.002*"griphook" + 0.002*"crouch" + '
-  '0.002*"snatcher" + 0.002*"sword"'),
- (5,
-  '0.016*"hagrid" + 0.005*"ron" + 0.005*"time" + 0.005*"good" + 0.004*"hand" + '
-  '0.004*"gryffindor" + 0.004*"try" + 0.004*"team" + 0.004*"well" + '
-  '0.004*"wood"'),
- (6,
-  '0.007*"hagrid" + 0.006*"snape" + 0.004*"eye" + 0.004*"face" + 0.004*"head" '
-  '+ 0.004*"ron" + 0.004*"malfoy" + 0.004*"time" + 0.004*"professor" + '
-  '0.004*"turn"'),
- (7,
-  '0.005*"professor_trelawney" + 0.004*"umbridge" + 0.003*"dream_oracle" + '
-  '0.002*"trelawney" + 0.002*"inspect" + 0.002*"timetable" + 0.002*"moonstone" '
-  '+ 0.002*"divination" + 0.002*"inspection" + 0.001*"note_clipboard"')]
-
