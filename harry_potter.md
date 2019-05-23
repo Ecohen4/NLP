@@ -1,4 +1,4 @@
-![](images/header.png)
+![](images/header.jpg)
 # Harry Potter NLP Technical Exercise
 
 by Matt Devor
@@ -120,6 +120,34 @@ Example command line execution:
 python hp_text_summarization.py -filepath 'data/Harry_Potter_Clean.csv' -summarizer TextRankSummarizer -length 5 -savetxt True
 ```
 
+Extractive Methodologes Tested:
+- 
+- 
+
+LexRank
+LexRank is an unsupervised approach that gets its inspiration from the same ideas behind Google’s PageRank algorithm. The authors say it is “based on the concept of eigenvector centrality in a graph representation of sentences”, using “a connectivity matrix based on on intra-sentence cosine similarity.” Ok, so in a nutshell, it finds the relative importance of all words in a document and selects the sentences which contain the most of those high-scoring words.
+
+
+Luhn Summarizer
+One of the first text summarization algorithms was published in 1958 by Hans Peter Luhn, working at IBM research. Luhn’s algorithm is a naive approach based on TF-IDF and looking at the “window size” of non-important words between words of high importance. It also assigns higher weights to sentences occurring near the beginning of a document.
+
+LSA Summarizer
+Latent Semantic Analysis is a relatively new algorithm which combines term frequency with singular value decomposition.
+
+TextRank Summarizer
+TextRank is another text summarizer based on the ideas of PageRank, and was also developed at the same time as LexRank, though by different groups of people. TextRank is a bit more simplistic than LexRank; although both algorithms are very similar, LexRank applies a heuristic post-processing step to remove sentences with highly duplicitous.
+
+Edmundson Summarizer
+In 1969, Harold Edmundson developed the summarizer bearing his name. Edmundson’s algorithm was, along with Luhn’s, one of the seminal text summarization techniques. What sets the Edmundson summarizer apart from the others is that it takes into account “bonus words”, words stated by the user as of high importance; “stigma words”, words of low importance or even negative importance; and “stop words”, which are the same as used elsewhere in NLP processing. Edmundson suggested using the words in a document’s title as bonus words. Using the chapter title as bonus words, this is what Edmundson outputs:
+
+SumBasic Summarizer
+The SumBasic algorithm was developed in 2005 and uses only the word probability approach to determine sentence importance. Sorry, but it’s pretty bad on this document.
+
+KL Summarizer
+The KLSum algorithm is a greedy method which adds sentences to the summary as long as the KL Divergence (a measure of entropy) is decreasing.
+
+Reduction Summarizer
+The Reduction algorithm is another graph-based model which values sentences according to the sum of the weights of their edges to other sentences in the document. This weight is computed in the same way as it is in the TexRank model.
 
 
 # Topic Modeling: LDA with Gensim/spaCy
