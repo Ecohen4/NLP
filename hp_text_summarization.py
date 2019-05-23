@@ -25,8 +25,13 @@ class TextSummarizer():
     '''
     Takes in a dataframe of the Harry Potter dataset, and summarizes each chapter using a 
     specified summarizer from the sumy library.
-    The user can specify the file to use, the number of summary sentences, and the summarizer
-    methodology to use through command line argument parsing.
+    The user can specify the input file to use, the number of summary sentences, the summarizer
+    algorithm to use, and to save to a txt file or print to the terminal to use through 
+    command line argument parsing.
+
+    Inputs: Pandas Dataframe
+
+    Outputs: Txt file of summarizations or output printed to terminal
     '''
 
     def __init__(self, df):
@@ -42,7 +47,7 @@ class TextSummarizer():
         self.language = "english"
         self.stop_words = stopwords.words('english')
 
-    def _summarize(self, text, summarizer, num_sentences=5, bonus_words=['Harry']):
+    def _summarize(self, text, summarizer, num_sentences, bonus_words=['Harry']):
         '''
         Summarizes an individual chapter within the Harry Potter corpus.
         The summary includes num_sentences total sentences
@@ -148,7 +153,12 @@ def parse_arguments():
                         help='Summarizer to use for each chapter summary. \
                               Options are in self.sumarizer_options_dict')
     parser.add_argument('-length', default=5, help='Number of summary sentences to return')
-    parser.add_argument('-savetxt', default=True, type=str2bool, nargs='?', const=True, help='Save output to text file?')
+    parser.add_argument('-savetxt', 
+                        default=True, 
+                        type=str2bool, 
+                        nargs='?', 
+                        const=True, 
+                        help='Save output to text file?')
     args = parser.parse_args()
 
     return args

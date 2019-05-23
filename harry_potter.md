@@ -52,9 +52,7 @@ Oh and have fun!
 
 
 # Introduction
-I am actually a huge fan of the Harry Potter books, but haven't read them lately, so this project was a great refresher for me.
-
-As far as approaching this problem, I divided it into two main chunks: 
+I am actually a huge fan of the Harry Potter books, but haven't read them lately, so this project was a great refresher for me. I also think the models I created will generalize well to any corpus of text where one would like generate summaries and latent topics. As far as approaching this problem, I divided it into two main chunks: 
 
 **Text Summarization**
  - I did quite a bit of research before diving in, there are two main categories of text summarization techniques, **Extractive** and **Abstractive**. 
@@ -65,6 +63,7 @@ As far as approaching this problem, I divided it into two main chunks:
 
 **Topic Modeling**
 - For topic modeling, I chose to use Latent Dirichlet Allocation, due to its ease of interpretation, and the robust model the Gensim library contains. 
+- Gensim was also chosen becuase of the built-in ability to caculate a coherence score for the LDA model, which has been shown to correlate better with human understanding than perplexity.
 - I also chose to use Gensim because it was out of my comfort zone, compared to sklearn, and I thought this would be a great opportunity to continue learning. 
 - NMF and SVD would potentially be valid techniques as well, and could be additional methods to explore further. 
 
@@ -86,12 +85,12 @@ As far as approaching this problem, I divided it into two main chunks:
   - chapter_name: Name of chapter (string)
   - extracted_text: Entire text of the chapter (string)
 - There are 198 chapters total.
-- The last book in the series, 'Harry Potter and the Deathly Hallows', at ~178,000 words, is almost 2.5 times as long as the first book 'Harry Potter and the Philosophers Stone'.
+- The last book in the series, 'Harry Potter and the Deathly Hallows', at ~178,000 words, is almost 2.5 times as long as the first book, 'Harry Potter and the Philosophers Stone'.
 
 The table below shows a summary of the dataset. 
 Note the books are in the same order as the .csv source, which is not necessarily chronological.
 
-| Book Name | Total Chapters | Total Word Count | Average Chapter Word Count | Average Word Length |
+| Book Name | Total Chapters | Total Word Count | Average Word Count per Chapter | Average Word Length |
 |----:|:------------------|:----------|:----------------------------|:--------------|
 | Harry Potter and the Chamber of Secrets| 18 | 84,077 | 4,671 | 4.72 |
 | Harry Potter and the Deathly Hallows | 36 | 178,107| 4,947 | 4.62 |
@@ -107,7 +106,7 @@ Note the books are in the same order as the .csv source, which is not necessaril
 # Text Summarization
 As mentioned above, I decided to focus on extractive text summarization methodolgies, and the python libray ```sumy ``` has quite a few options for summarization, is quite easy to use, and produces results quickly. 
 
-I initially decided to try out several different text summarization techniques, and evaluate them all on the same chapter. In terms of evaluation, since comprehension is quite difficult to quantify, I read through each summary manually, and made a judgement call as to which one was "best", in order to use that as the default summarizer.
+I initially decided to try out eight different text summarization techniques, and evaluate them all on the same chapter. In terms of evaluation, since comprehension/summarization is quite difficult to quantify, I read through each summary manually, and made a judgement call as to which one was "best", in order to use that as the default summarizer.
 
 However, I set up the file ```hp_text_summarization.py``` to be quite dynamic, as the user can use argument parsing to select the following variables:
   - -filepath: File path to the harry potter dataset (csv)
@@ -120,35 +119,79 @@ Example command line execution:
 python hp_text_summarization.py -filepath 'data/Harry_Potter_Clean.csv' -summarizer TextRankSummarizer -length 5 -savetxt True
 ```
 
-Extractive Methodologes Tested:
-- 
-- 
+## Extractive Methodologies Tested
+I used the following extractive summarization alogrithms on chapter 1 of Harry Potter and the Chamber of Secrets. I chose 5 sentences for each summary, as that seemed to be a good balance of description without being too much to read, but as mentioned above, this is a hyperparameter that can be adjusted by the user.
 
-LexRank
-LexRank is an unsupervised approach that gets its inspiration from the same ideas behind Google’s PageRank algorithm. The authors say it is “based on the concept of eigenvector centrality in a graph representation of sentences”, using “a connectivity matrix based on on intra-sentence cosine similarity.” Ok, so in a nutshell, it finds the relative importance of all words in a document and selects the sentences which contain the most of those high-scoring words.
+|Algorithm Name | Description|
+|----:|:------------------|
+|   Edmundson Summarizer  | Harold Edmundson developed the algortihm bearing his name in 1969. What sets this algortim apart from the others is that it takes into account “bonus words”, words stated by the user as of high importance; “stigma words”, words of low importance or even negative importance; and “stop words”, which are the same as used elsewhere in NLP processing. |
+|  KL Summarizer  | The KL Summarizer algorithm greedily adds sentences to the summary as long as the KL Divergence (a measure of entropy) is decreasing.|
+|  LexRank Summarizer | LexRank is an graphical unsupervised algorithm that gets its inspiration from the methodology behind Google’s PageRank algorithm. It finds the relative importance of all words in a document and selects the sentences which contain the greatest number of high-scoring words.|
+|  LSA (Latent Semantic Analysis)|  Latent semantic analysis is an unsupervised method of summarization it combines term frequency techniques with singular value decomposition to summarize texts. It is one of the most recent techniques for summarization. |
+|  Luhn Summarizer  | Luhn is one of the earliest summarization algorithms, created around the same time as Edmundson, by the famous IBM researcher it was named after. It scores sentences based on frequency of the most important words. |
+|  Reduction Summarizer  | Similar to TextRank, the Reduction algorithm is another graph-based model which values sentences according to the sum of the weights of their edges to other sentences in the document.|
+| SumBasic Summarizer | The SumBasic algorithm was developed in 2005 and uses only the word probability approach to determine sentence importance. It seems to tend to favor shorter sentences which in my mind are not very useful or descriptive of the chapter as a while.|
+|TextRank Summarizer| TextRank is a another graph-based summarization technique, based on Google'sPageRank, but was developed by a different group of people than LexRank. with keyword extractions in from document. Both algorithms are similar, but LexRank has an additional step of removing sentences that are highly duplicitous|
+
+#### Results for each technique on Chapter 1 of Harry Potter and the Chamber of Secrets, "The Worst Birthday".
+**Edmundson Summarizer**
+- The effect of this simple sentence on the rest of the family was incredible: Dudley gasped and fell off his chair with a crash that shook the whole kitchen; Mrs. Dursley gave a small scream and clapped her hands to her mouth; Mr. Dursley jumped to his feet, veins throbbing in his temples.
+- He missed the castle, with its secret passageways and ghosts, his classes  though perhaps not Snape, the Potions master , the mail arriving by owl, eating banquets in the Great Hall, sleeping in his four-poster bed in the tower dormitory, visiting the gamekeeper, Hagrid, in his cabin next to the Forbidden Forest in the grounds, and, especially, Quidditch, the most popular sport in the wizarding world  six tall goal posts, four flying balls, and fourteen players on broomsticks .
+- Of course, his hopes hadn’t been high; they’d never given him a real present, let alone a cake—but to ignore it completely…  At that moment, Uncle Vernon cleared his throat importantly and said, “Now, as we all know, today is a very important day.”  Harry looked up, hardly daring to believe it.
+- Harry had slipped through Voldemort’s clutches for a second time, but it had been a narrow escape, and even now, weeks later, Harry kept waking in the night, drenched in cold sweat, wondering where Voldemort was now, remembering his livid face, his wide, mad eyes—  Harry suddenly sat bolt upright on the garden bench.
+- Harry knew he shouldn’t have risen to Dudley’s bait, but Dudley had said the very thing Harry had been thinking himself… maybe he didn’t have any friends at Hogwarts…  Wish they could see famous Harry Potter now, he thought savagely as he spread manure on the flower beds, his back aching, sweat running down his face.
+
+**KL Summarizer**
+- He missed the castle, with its secret passageways and ghosts, his classes  though perhaps not Snape, the Potions master , the mail arriving by owl, eating banquets in the Great Hall, sleeping in his four-poster bed in the tower dormitory, visiting the gamekeeper, Hagrid, in his cabin next to the Forbidden Forest in the grounds, and, especially, Quidditch, the most popular sport in the wizarding world  six tall goal posts, four flying balls, and fourteen players on broomsticks .
+He had spent ten years with the Dursleys, never understanding why he kept making odd things happen without meaning to, believing the Dursleys’ story that he had got his scar in the car crash that had killed his parents.
+“And you?” said Uncle Vernon viciously to Harry.
+He crossed the lawn, slumped down on the garden bench, and sang under his breath:  “Happy birthday to me… happy birthday to me…”  No cards, no presents, and he would be spending the evening pretending not to exist.
+Harry knew he shouldn’t have risen to Dudley’s bait, but Dudley had said the very thing Harry had been thinking himself… maybe he didn’t have any friends at Hogwarts…  Wish they could see famous Harry Potter now, he thought savagely as he spread manure on the flower beds, his back aching, sweat running down his face.
+
+**LexRank Summarizer**
+- Ever since Harry had come home for the summer holidays, Uncle Vernon had been treating him like a bomb that might go off at any moment, because Harry Potter wasn’t a normal boy.
+- Harry had taken up his place at wizard school, where he and his scar were famous… but now the school year was over, and he was back with the Dursleys for the summer, back to being treated like a dog that had rolled in something smelly.
+- “This could well be the day I make the biggest deal of my career,” said Uncle Vernon.
+- At eight-fifteen—”  “I’ll announce dinner,” said Aunt Petunia.
+- “Well done,” said Harry.
+
+**LSA (Latent Semantic Analysis)**
+- He missed the castle, with its secret passageways and ghosts, his classes  though perhaps not Snape, the Potions master , the mail arriving by owl, eating banquets in the Great Hall, sleeping in his four-poster bed in the tower dormitory, visiting the gamekeeper, Hagrid, in his cabin next to the Forbidden Forest in the grounds, and, especially, Quidditch, the most popular sport in the wizarding world  six tall goal posts, four flying balls, and fourteen players on broomsticks.
+- Uncle Vernon was large and neckless, with an enormous black mustache; Aunt Petunia was horse faced and bony; Dudley was blond, pink, and porky.
+- For the first couple of weeks back, Harry had enjoyed muttering nonsense words under his breath and watching Dudley tearing out of the room as fast as his fat legs would carry him.
+- As neither Dudley nor the hedge was in any way hurt, Aunt Petunia knew he hadn’t really done magic, but he still had to duck as she aimed a heavy blow at his head with the soapy frying pan.
+- While Dudley lolled around watching and eating ice cream, Harry cleaned the windows, washed the car, mowed the lawn, trimmed the flowerbeds, pruned and watered the roses, and repainted the garden bench.
 
 
-Luhn Summarizer
-One of the first text summarization algorithms was published in 1958 by Hans Peter Luhn, working at IBM research. Luhn’s algorithm is a naive approach based on TF-IDF and looking at the “window size” of non-important words between words of high importance. It also assigns higher weights to sentences occurring near the beginning of a document.
+**Luhn Summarizer**
+- All Harry’s spellbooks, his wand, robes, cauldron, and top of the line Nimbus Two Thousand broomstick had been locked in a cupboard under the stairs by Uncle Vernon the instant Harry had come home.
+- Uncle Vernon had even padlocked Harry’s owl, Hedwig, inside her cage, to stop her from carrying messages to anyone in the wizarding world.
+- He crossed the lawn, slumped down on the garden bench, and sang under his breath:  “Happy birthday to me… happy birthday to me…”  No cards, no presents, and he would be spending the evening pretending not to exist.
+- For the first couple of weeks back, Harry had enjoyed muttering nonsense words under his breath and watching Dudley tearing out of the room as fast as his fat legs would carry him.
+- “Remember, boy—one sound—”  Harry crossed to his bedroom on tiptoe slipped inside, closed the door, and turned to collapse on his bed.
 
-LSA Summarizer
-Latent Semantic Analysis is a relatively new algorithm which combines term frequency with singular value decomposition.
+**Reduction Summarizer**
 
-TextRank Summarizer
-TextRank is another text summarizer based on the ideas of PageRank, and was also developed at the same time as LexRank, though by different groups of people. TextRank is a bit more simplistic than LexRank; although both algorithms are very similar, LexRank applies a heuristic post-processing step to remove sentences with highly duplicitous.
 
-Edmundson Summarizer
-In 1969, Harold Edmundson developed the summarizer bearing his name. Edmundson’s algorithm was, along with Luhn’s, one of the seminal text summarization techniques. What sets the Edmundson summarizer apart from the others is that it takes into account “bonus words”, words stated by the user as of high importance; “stigma words”, words of low importance or even negative importance; and “stop words”, which are the same as used elsewhere in NLP processing. Edmundson suggested using the words in a document’s title as bonus words. Using the chapter title as bonus words, this is what Edmundson outputs:
+**SumBasic Summarizer**
+What was it to the Dursleys if Harry went back to school without any of his homework done?
+“Excellent, Dudley,” said Uncle Vernon.
+At eight-fifteen—”  “I’ll announce dinner,” said Aunt Petunia.
+“I’ll be in my room, making no noise and pretending I’m not there,” he said.
+“Well done,” said Harry.
 
-SumBasic Summarizer
-The SumBasic algorithm was developed in 2005 and uses only the word probability approach to determine sentence importance. Sorry, but it’s pretty bad on this document.
+**TextRank Summarizer**
+- “All right,” said Harry, “all right…”  Uncle Vernon sat back down, breathing like a winded rhinoceros and watching Harry closely out of the corners of his small, sharp eyes.
+- Ever since Harry had come home for the summer holidays, Uncle Vernon had been treating him like a bomb that might go off at any moment, because Harry Potter wasn’t a normal boy.
+- Harry’s parents had died in Voldemort’s attack, but Harry had escaped with his lightning scar, and somehow—nobody understood why Voldemort’s powers had been destroyed the instant he had failed to kill Harry.
+- Harry had slipped through Voldemort’s clutches for a second time, but it had been a narrow escape, and even now, weeks later, Harry kept waking in the night, drenched in cold sweat, wondering where Voldemort was now, remembering his livid face, his wide, mad eyes—  Harry suddenly sat bolt upright on the garden bench.
+- Harry knew he shouldn’t have risen to Dudley’s bait, but Dudley had said the very thing Harry had been thinking himself… maybe he didn’t have any friends at Hogwarts…  Wish they could see famous Harry Potter now, he thought savagely as he spread manure on the flower beds, his back aching, sweat running down his face.
 
-KL Summarizer
-The KLSum algorithm is a greedy method which adds sentences to the summary as long as the KL Divergence (a measure of entropy) is decreasing.
+Overall, while this is entirely a judgement call, I decided to go with the () summarizer as the "default" in the code, as this had a good combination of descriptive yet different sentences, and seemed to represent the chapter as a whole well. That said, as mentioned above, the algorithm I created allows the user to select any of the eight summarization algorithms. 
 
-Reduction Summarizer
-The Reduction algorithm is another graph-based model which values sentences according to the sum of the weights of their edges to other sentences in the document. This weight is computed in the same way as it is in the TexRank model.
+Either way, this would definitely allow someone who is not familiar with the Harry Potter series of books to get familiar with the content within each chapter very quickly. Also, while this algorithm was unable to create good titles for each chapter (I played around with several options but wasn't happy with any of them), in the next steps section, I outline and abstractive methodology that might be a good option for title creation.
 
+[Back to Top](#Table-of-Contents)
 
 # Topic Modeling: LDA with Gensim/spaCy
 
