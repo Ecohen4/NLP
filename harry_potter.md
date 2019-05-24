@@ -10,8 +10,8 @@ by Matt Devor
 - [Overview of the Data](#overview-of-the-data)
 - [Text Summarization](#text-summarization)
   * [Extractive Methodologies Tested](#extractive-methodologies-tested)
-      - [Results for each technique on Chapter 1 of Harry Potter and the Chamber of Secrets, "The Worst Birthday"](#results-for-each-technique-on-chapter-1-of-harry-potter-and-the-chamber-of-secrets-the-worst-birthday)
-- [Topic Modeling: LDA with Gensim/spaCy](#topic-modeling--lda-with-gensim-spacy)
+      - [Results for each technique on Chapter 1 of Harry Potter and the Chamber of Secrets, "The Worst Birthday"](#results-for-each-technique-on-chapter-1-of-harry-potter-and-the-chamber-of-secrets-"the-worst-birthday")
+- [Topic Modeling](#topic-modeling)
 - [Combining Summarization and Topic Modeling](#combining-summarization-and-topic-modeling)
 - [Reflection and Next Steps](#reflection-and-next-steps)
   * [Reflection](#reflection)
@@ -34,21 +34,20 @@ I am actually a huge fan of the Harry Potter books, but haven't read them lately
  - I did quite a bit of research before diving in, there are two main categories of text summarization techniques, **Extractive** and **Abstractive**. 
     - Extractive Summarization: Methods rely on extracting several parts from a corpus of text, such as phrases and sentences, and stacking them together to create a summary. As such, identifying the right sentences for summarization is of utmost importance in an extractive method.
     - Abstractive Summarization: These methods use advanced NLP techniques to generate an entirely new summary. Some parts of this summary may not even appear in the original text, as these methods simulate how humans would summarize text.
-  - I chose to focus on extractive techniques for this project, as the models I researched that use abstracive summarization are primarily deep learning methods that have better results on smaller paragraphs, vs. the entire chapters that need to be summarized for this project. 
+  - I chose to focus on extractive techniques for this project, as the models I researched that use abstractive summarization are primarily deep learning methods that have better results on smaller paragraphs, vs. the entire chapters that need to be summarized for this project. 
   - Below, I have presented several text summarization methodologies, and the methodology I consider the best has been implemented in the final version of the code. 
 
 **Topic Modeling**
 - For topic modeling, I chose to use Latent Dirichlet Allocation, due to its ease of interpretation, and the robust model the Gensim library contains. 
-- Gensim was also chosen becuase of the built-in ability to caculate a coherence score for the LDA model, which has been shown to correlate better with human understanding than perplexity.
-- I also chose to use Gensim because it was out of my comfort zone, compared to sklearn, and I thought this would be a great opportunity to continue learning. 
+- Gensim was also chosen because of the built-in ability to calculate a coherence score for the LDA model, which has been shown to correlate better with human understanding than perplexity.
+- I also chose to use spaCy, particularly for its speed, lemmatization features, and parts of speech tagging. 
 - NMF and SVD would potentially be valid techniques as well, and could be additional methods to explore further. 
-
 
 [Back to Top](#Table-of-Contents)
 
 # Strategy and Process
 - Overview of Data
-- Text Summarization
+- Text Summarization: Extractive Modeling Techniques
 - Topic Modeling: LDA with Gensim/spaCy
 - Combining Summarization and Topic Modeling
 - Reflection and Future Work
@@ -78,11 +77,10 @@ Note the books are in the same order as the .csv source, which is not necessaril
 | Harry Potter and the Philosophers Stone | 17 | 77,346 | 4,550 | 4.49 |
 | Harry Potter and the Prisoner of Azkaban | 22 | 104,661 | 4,757 | 4.61 |
 
-
 [Back to Top](#Table-of-Contents)
 
 # Text Summarization
-As mentioned above, I decided to focus on extractive text summarization methodolgies, and the python libray ```sumy ``` has quite a few options for summarization, is quite easy to use, and produces results quickly. 
+As mentioned above, I decided to focus on extractive text summarization methodologies, and the python library ```sumy ``` has quite a few options for summarization, is quite easy to use, and produces results quickly. 
 
 I initially decided to try out eight different text summarization techniques, and evaluate them all on the same chapter. In terms of evaluation, since comprehension/summarization is quite difficult to quantify, I read through each summary manually, and made a judgement call as to which one was "best", in order to use that as the default summarizer.
 
@@ -94,24 +92,24 @@ However, I set up the file ```hp_text_summarization.py``` to be quite dynamic, a
 
 Example command line execution:
 ```
-python hp_text_summarization.py -filepath 'data/Harry_Potter_Clean.csv' -summarizer TextRankSummarizer -length 5 -savetxt True
+python hp_text_summarization.py -filepath '../data/Harry_Potter_Clean.csv' -summarizer TextRankSummarizer -length 5 -savetxt True
 ```
 
 ## Extractive Methodologies Tested
-I used the following extractive summarization alogrithms on chapter 1 of Harry Potter and the Chamber of Secrets. I chose 5 sentences for each summary, as that seemed to be a good balance of description without being too much to read, but as mentioned above, this is a hyperparameter that can be adjusted by the user.
+I used the following extractive summarization algorithms on chapter 1 of Harry Potter and the Chamber of Secrets. I chose 5 sentences for each summary, as that seemed to be a good balance of description without being too much to read, but as mentioned above, this is a hyperparameter that can be adjusted by the user.
 
 |Algorithm Name | Description|
 |----:|:------------------|
-|   Edmundson Summarizer  | Harold Edmundson developed the algortihm bearing his name in 1969. What sets this algortim apart from the others is that it takes into account “bonus words”, words stated by the user as of high importance; “stigma words”, words of low importance or even negative importance; and “stop words”, which are the same as used elsewhere in NLP processing. |
-|  KL Summarizer  | The KL Summarizer algorithm greedily adds sentences to the summary as long as the KL Divergence (a measure of entropy) is decreasing.|
-|  LexRank Summarizer | LexRank is an graphical unsupervised algorithm that gets its inspiration from the methodology behind Google’s PageRank algorithm. It finds the relative importance of all words in a document and selects the sentences which contain the greatest number of high-scoring words.|
-|  LSA (Latent Semantic Analysis)|  Latent semantic analysis is an unsupervised method of summarization it combines term frequency techniques with singular value decomposition to summarize texts. It is one of the most recent techniques for summarization. |
-|  Luhn Summarizer  | Luhn is one of the earliest summarization algorithms, created around the same time as Edmundson, by the famous IBM researcher it was named after. It scores sentences based on frequency of the most important words. |
-|  Reduction Summarizer  | Similar to TextRank, the Reduction algorithm is another graph-based model which values sentences according to the sum of the weights of their edges to other sentences in the document.|
-| SumBasic Summarizer | The SumBasic algorithm was developed in 2005 and uses only the word probability approach to determine sentence importance. It seems to tend to favor shorter sentences which in my mind are not very useful or descriptive of the chapter as a while.|
-|TextRank Summarizer| TextRank is a another graph-based summarization technique, based on Google'sPageRank, but was developed by a different group of people than LexRank. with keyword extractions in from document. Both algorithms are similar, but LexRank has an additional step of removing sentences that are highly duplicitous|
+|   **Edmundson Summarizer**  | Harold Edmundson developed the algorithm bearing his name in 1969. What sets this algorithm apart from the others is that it takes into account “bonus words”, words stated by the user as of high importance; “stigma words”, words of low importance or even negative importance; and “stop words”, which are the same as used elsewhere in NLP processing. |
+|  **KL Summarizer**  | The KL Summarizer algorithm greedily adds sentences to the summary as long as the KL Divergence (a measure of entropy) is decreasing.|
+|  **LexRank Summarizer** | LexRank is an graphical unsupervised algorithm that gets its inspiration from the methodology behind Google’s PageRank algorithm. It finds the relative importance of all words in a document and selects the sentences which contain the greatest number of high-scoring words.|
+|  **LSA (Latent Semantic Analysis)**|  Latent semantic analysis is an unsupervised method of summarization it combines term frequency techniques with singular value decomposition to summarize texts. It is one of the most recent techniques for summarization. |
+|  **Luhn Summarizer**  | Luhn is one of the earliest summarization algorithms, created around the same time as Edmundson, by the famous IBM researcher it was named after. It scores sentences based on frequency of the most important words. |
+|  **Reduction Summarizer**  | Similar to TextRank, the Reduction algorithm is another graph-based model which values sentences according to the sum of the weights of their edges to other sentences in the document.|
+| **SumBasic Summarizer** | The SumBasic algorithm was developed in 2005 and uses only the word probability approach to determine sentence importance. It seems to tend to favor shorter sentences which in my mind are not very useful or descriptive of the chapter as a while.|
+| **TextRank Summarizer** | TextRank is a another graph-based summarization technique, based on Google'sPageRank, but was developed by a different group of people than LexRank. with keyword extractions in from document. Both algorithms are similar, but LexRank has an additional step of removing sentences that are highly duplicitous|
 
-### Results for each Methodology on Chapter 1 of Harry Potter and the Chamber of Secrets, "The Worst Birthday":
+### Results for each Methodology on Chapter 1 of Harry Potter and the Chamber of Secrets, "The Worst Birthday"
 **Edmundson Summarizer**
 - The effect of this simple sentence on the rest of the family was incredible: Dudley gasped and fell off his chair with a crash that shook the whole kitchen; Mrs. Dursley gave a small scream and clapped her hands to her mouth; Mr. Dursley jumped to his feet, veins throbbing in his temples.
 - He missed the castle, with its secret passageways and ghosts, his classes  though perhaps not Snape, the Potions master , the mail arriving by owl, eating banquets in the Great Hall, sleeping in his four-poster bed in the tower dormitory, visiting the gamekeeper, Hagrid, in his cabin next to the Forbidden Forest in the grounds, and, especially, Quidditch, the most popular sport in the wizarding world  six tall goal posts, four flying balls, and fourteen players on broomsticks .
@@ -175,13 +173,13 @@ Either way, this would definitely allow someone who is not familiar with the Har
 
 [Back to Top](#Table-of-Contents)
 
-# Topic Modeling: LDA with Gensim/spaCy
+# Topic Modeling
 
 Latent Dirichlet Allocation is an unsupervised modeling technique, used to derive (k=num_topics) latent topics from corpuses of text (collections of documents). There are many examples of real-world use cases for this technique, such as document classification, search engine optimization, classifying social media users, and many more. 
 
-Gensim makes it very easy to create bigram and/or trigram models, and spaCy's lemmitization feature allows one to take use the parts of speech they are interested in. In this case, I decided to only use nouns, adjectives, verbs, and adverbs, in order to reduce the amount of words that would be less useful to differentiate topics. 
+Gensim makes it very easy to create bigram and/or trigram models, and spaCy's lemmatization feature allows one to take use the parts of speech they are interested in. In this case, I decided to only use nouns, adjectives, verbs, and adverbs, in order to reduce the amount of words that would be less useful to differentiate topics. 
 
-The LDA algorithm takes an input X matrix (which is the term document frequecy matrix from the corpus) and creates phi and theta matrices, which relate to the input matrix as follows:
+The LDA algorithm takes an input X matrix (which is the term document frequency matrix from the corpus) and creates phi and theta matrices, which relate to the input matrix as follows:
 
 | Matrix | Dimensions| Relates | Contains |
 |---|---|---|---|
@@ -209,13 +207,15 @@ The wordcloud below shows the 10 most important words in each of the 8 topics, w
 ![](images/wordcloud_1.png)
 
 
-As we can see, Harry and Hermoine are repeated in quite a few topics, so I decided to add them to the stop words list. This seemed a bit counterintuitive, since they are obviously integral parts of the story, but in terms of "differentiating" topics, I think it was necessary. 
+As we can see, Harry and Hermione are repeated in quite a few topics, so I decided to add them to the stop words list. This seemed a bit counterintuitive, since they are obviously integral parts of the story, but in terms of "differentiating" topics, I think it was necessary. 
 
 I went through several more iterations of adding words to the stop words list, and while this process could go on indefinitely, this is the wordcloud from the final LDA model I created, as well 
 stopwords used:
 
 ```Python
-stopwords = ['not', 'look', 'do', 'go', 'get', 'would', 'be', 's', 'say', 'see', 'could', 'back', 'know', 'come', 'harry', 'hermione', 'think', 'tell', 'take', 'make', 'want']
+stopwords = ['not', 'look', 'do', 'go', 'get', 'would', 'be', 's', 'say', 'see', 
+'could', 'back', 'know', 'come', 'harry', 'hermione', 'think', 'tell', 'take', 
+'make', 'want']
 ```
 
 ![](images/wordcloud_3.png)
@@ -233,6 +233,11 @@ Here is my attempt at manually assigning a title to each topic:
  - Topic 7: Professor Trelawney, Umbridge, and the Dream Oracle
 
 For this model, the "topics" ended up mostly being the important or primary characters within each document, vs. themes or plotlines. Such is the nature of unsupervised models, as in you never know exactly what you'll get, but I believe these results, combined with with the summarization techniques above, will give the user additional useful information about each chapter.
+
+Note that the file ```hp_LDA_gensim.py``` is setup to be quite dynamic as well, and please see the docstring notes for instructions on argument parsing for that file, but here is an example of command-line execution:
+```
+python hp_lda_gensim.py -filepath '../data/Harry_Potter_Clean.csv' -numtopics 8 -verbose T -savemodel T
+```
 
 
 [Back to Top](#Table-of-Contents)
@@ -284,7 +289,7 @@ In order to leverage the results of both models, here is an example of a chapter
  - However, the combination of text summarization and the LDA model gives the user a great picture of the chapter as a whole.
 
 ## Next Steps
-- In terms of title creation for each chapter, I believe an abstrative deep learning methodology would be very interesting to implement.
+- In terms of title creation for each chapter, I believe an abstractive deep learning methodology would be very interesting to implement.
 - Specifically, a seq2seq LSTM model that can train on small paragraphs as the X values, and human created titles as y values, would be a great way to approach the problem of title creation.
 - Transfer learning might be helpful for this task as well, and while [this](https://ai.googleblog.com/2016/08/text-summarization-with-tensorflow.html) model seems to have a very robust algorithm, I don't think there is a trained model available to leverage, so would need to train on my own.
 

@@ -139,7 +139,7 @@ class GensimTopicModeler():
         coherence_lda = coherence_model_lda.get_coherence()
         print('\nCoherence Score: ', coherence_lda)
 
-    def compute_coherence_values(self, limit=10, start=2, step=2):
+    def compute_coherence_values(self, limit=20, start=2, step=2):
         """
         Compute c_v coherence for various number of topics
         Note this takes a very long time to run, but is necessary if you want
@@ -193,10 +193,10 @@ class GensimTopicModeler():
         
         plt.show()
 
-    def plot_wordclouds(self):
+    def plot_wordclouds(self, num_topics):
         '''
         Plot Wordcloud of Top N words in each topic.
-        Note this plot looks better if plotted within Jupyter notebook
+        Note this plot works best within a jupyter notebook
         '''
         
         cols = [color for name, color in mcolors.TABLEAU_COLORS.items()]
@@ -216,7 +216,10 @@ class GensimTopicModeler():
 
         for i, ax in enumerate(axes.flatten()):
             fig.add_subplot(ax)
-            topic_words = dict(topics[i][1])
+            if i > num_topics - 1:
+                break
+            else:
+                topic_words = dict(topics[i][1])
             cloud.generate_from_frequencies(topic_words, max_font_size=300)
             plt.gca().imshow(cloud)
             plt.gca().set_title('Topic ' + str(i), fontdict=dict(size=16))
@@ -226,7 +229,8 @@ class GensimTopicModeler():
         plt.axis('off')
         plt.margins(x=0, y=0)
         plt.tight_layout()
-        plt.plot()
+        
+        plt.show()
 
 def load_data_clean_text(file_path):
     try:
@@ -265,7 +269,8 @@ def parse_arguments():
     parser.add_argument('-filepath', 
                         default='../data/Harry_Potter_Clean.csv', 
                         help='File path/name of text to summarize')
-    parser.add_argument('-numtopics', 
+    parser.add_argument('-numtopics',
+                        type=int, 
                         default=8, 
                         help='Number topics to use in LDA model')
     parser.add_argument('-verbose', 
@@ -293,11 +298,13 @@ def main():
     gen_LDA.fit(args.numtopics)
 
     # uncomment if would like to plot coherence score vs. num_topics
-    model_list, coherence_values = gen_LDA.compute_coherence_values()
-    gen_LDA.plot_coherence(coherence_values)
+    # Note this will take a long time to run, since creates many LDA models.
+    # model_list, coherence_values = gen_LDA.compute_coherence_values()
+    # gen_LDA.plot_coherence(coherence_values)
 
     # uncomment if would like to plot wordcloud
-    gen_LDA.plot_wordclouds(self)
+    # Note this plot looks best within a jupyter notebook
+    gen_LDA.plot_wordclouds(args.numtopics)
 
 if __name__ == "__main__":
     main()
