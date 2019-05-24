@@ -1,5 +1,6 @@
 <!-- ![](images/header.jpg) -->
 <img display=inline-block display=block margin-left=auto margin-right=auto width=100% src=images/header.jpg>
+
 # Harry Potter NLP Technical Exercise
 
 by Matt Devor
