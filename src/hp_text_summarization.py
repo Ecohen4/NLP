@@ -40,7 +40,7 @@ class TextSummarizer():
 
     def __init__(self, df):
         self.df = df
-        self.sumarizer_options_dict = {'EdmundsonSummarizer': EdmundsonSummarizer, 
+        self.summarizer_options_dict = {'EdmundsonSummarizer': EdmundsonSummarizer, 
                                        'KLSummarizer': KLSummarizer, 
                                        'LexRankSummarizer': LexRankSummarizer, 
                                        'LsaSummarizer': LsaSummarizer, 
@@ -65,7 +65,8 @@ class TextSummarizer():
 
         Returns
         ----------
-
+        summary: Summary of chapter, containing num_sentences sentences
+                 Note this is a "summary" sumy object
         '''
         # Initialize summarizer model and stopwords
         summarizer = summarizer(Stemmer(self.language))
@@ -90,10 +91,10 @@ class TextSummarizer():
         Summarizes all chapters for each Harry Potter book, and either prints summaries to terminal,
         or saves to text file, depending on boolean variable save_to_txt
         '''
-        file_txt = open("harry_potter_summaries.txt","w") if save_to_txt == True else False 
+        file_txt = open("../summaries/harry_potter_summaries.txt","w") if save_to_txt == True else False 
 
         if type(summarizer) == str:
-            summarizer = self.sumarizer_options_dict[summarizer]
+            summarizer = self.summarizer_options_dict[summarizer]
 
         # Loop through all books in the corpus
         unique_books = self.df.book_name.unique()
@@ -153,7 +154,7 @@ def load_data(file_path):
 def str2bool(v):
     '''
     Allows for the use of booleans in argument parsing.
-    Otherwise, booleans are simply treated as strings
+    Otherwise, booleans are simply treated as strings.
     '''
     if v.lower() in ('yes', 'true', 't', 'y', '1'):
         return True
@@ -170,7 +171,7 @@ def parse_arguments():
     parser.add_argument('-summarizer', 
                         default=TextRankSummarizer, 
                         help='Summarizer to use for each chapter summary. \
-                              Options are in self.sumarizer_options_dict')
+                              Options are in self.summarizer_options_dict')
     parser.add_argument('-length', 
                         default=5, 
                         help='Number of summary sentences to return')

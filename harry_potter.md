@@ -169,7 +169,7 @@ I used the following extractive summarization algorithms on chapter 1 of Harry P
 - Harry had slipped through Voldemort’s clutches for a second time, but it had been a narrow escape, and even now, weeks later, Harry kept waking in the night, drenched in cold sweat, wondering where Voldemort was now, remembering his livid face, his wide, mad eyes—  Harry suddenly sat bolt upright on the garden bench.
 - Harry knew he shouldn’t have risen to Dudley’s bait, but Dudley had said the very thing Harry had been thinking himself… maybe he didn’t have any friends at Hogwarts…  Wish they could see famous Harry Potter now, he thought savagely as he spread manure on the flower beds, his back aching, sweat running down his face.
 
-Overall, while this is entirely a judgement call, I decided to go with the TextRank summarizer as the "default" in the code, as this had a good combination of descriptive yet different sentences, and seemed to represent the chapter as a whole well. That said, as mentioned above, the script I created allows the user to select any of the eight summarization algorithms. 
+Overall, while this is entirely a judgement call, I decided to go with the **TextRank** summarizer as the "default" in the code, as this had a good combination of descriptive yet different sentences, and seemed to represent the chapter as a whole well. That said, as mentioned above, the script I created allows the user to select any of the eight summarization algorithms. 
 
 Either way, this would definitely allow someone who is not familiar with the Harry Potter series of books to get familiar with the content within each chapter very quickly. Also, while this algorithm was unable to create good titles for each chapter (I played around with several options but wasn't happy with any of them), in the 'Next Steps section below, I outline an abstractive methodology that might be a good option for title creation.
 
@@ -225,14 +225,14 @@ stopwords = ['not', 'look', 'do', 'go', 'get', 'would', 'be', 's', 'say', 'see',
 The most important part of any topic model is really "are these topics easily interpretable by humans", in addition to ideally being well differentiated. 
 
 Here is my attempt at manually assigning a title to each topic:
- - Topic 0: Voldemnort, Tom Riddle, and the Horcrux
- - Topic 1: Wands, Eyes, Voldemort, and Dudley
- - Topic 2: The Weasleys and Wizards
- - Topic 3: Snape, Sirius, and Dumbledore
- - Topic 4: Greyback, Scabior, and a Prisoner
- - Topic 5: Hagrid, Ron, and Gryffindor
- - Topic 6: Hagrid, Snape, Ron, and Malfoy
- - Topic 7: Professor Trelawney, Umbridge, and the Dream Oracle
+ - **Topic 0:** Voldemnort, Tom Riddle, and the Horcrux
+ - **Topic 1:** Wands, Eyes, Voldemort, and Dudley
+ - **Topic 2:** The Weasleys and Wizards
+ - **Topic 3:** Snape, Sirius, and Dumbledore
+ - **Topic 4:** Greyback, Scabior, and a Prisoner
+ - **Topic 5:** Hagrid, Ron, and Gryffindor
+ - **Topic 6:** Hagrid, Snape, Ron, and Malfoy
+ - **Topic 7:** Professor Trelawney, Umbridge, and the Dream Oracle
 
 For this model, the "topics" ended up mostly being the important or primary characters within each document, vs. themes or plotlines. Such is the nature of unsupervised models, as in you never know exactly what you'll get, but I believe these results, combined with with the summarization techniques above, will give the user additional useful information about each chapter.
 
@@ -240,7 +240,6 @@ Note that the file ```hp_LDA_gensim.py``` is setup to be quite dynamic as well, 
 ```
 python hp_lda_gensim.py -filepath '../data/Harry_Potter_Clean.csv' -numtopics 8 -verbose T -savemodel T
 ```
-
 
 [Back to Top](#Table-of-Contents)
 

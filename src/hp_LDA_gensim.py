@@ -118,6 +118,7 @@ class GensimTopicModeler():
 
         # Print the top 10 keywords for each topic
         if self.verbose:
+            print("Top 10 Most Important Words by Topic:")
             pprint(self.lda_model.print_topics())
 
         if self.save_model:
@@ -138,6 +139,14 @@ class GensimTopicModeler():
                                              coherence='c_v')
         coherence_lda = coherence_model_lda.get_coherence()
         print('\nCoherence Score: ', coherence_lda)
+
+    def get_topic_distribution(self, chapter_index):
+        '''
+        Print the topic distribution of a single chapter, using the chapter index.
+        '''
+        print(f'\nTopic Distribution for Chapter at Index {chapter_index}:')
+        print('format is (topic #, % of chapter comprised by topic)')
+        print(self.lda_model.get_document_topics(self.tdf[chapter_index]))
 
     def compute_coherence_values(self, limit=20, start=2, step=2):
         """
@@ -296,6 +305,8 @@ def main():
     gen_LDA = GensimTopicModeler(corpus, args.verbose, args.savemodel)
     gen_LDA.tokenize_corpus()
     gen_LDA.fit(args.numtopics)
+    gen_LDA.score()
+    gen_LDA.get_topic_distribution(0)
 
     # uncomment if would like to plot coherence score vs. num_topics
     # Note this will take a long time to run, since creates many LDA models.
@@ -304,7 +315,7 @@ def main():
 
     # uncomment if would like to plot wordcloud
     # Note this plot looks best within a jupyter notebook
-    gen_LDA.plot_wordclouds(args.numtopics)
+    # gen_LDA.plot_wordclouds(args.numtopics)
 
 if __name__ == "__main__":
     main()
