@@ -29,7 +29,7 @@ class GensimTopicModeler():
     topics within the Harry Potter corpus.
 
     The user can specify the input file to use, number of topics, verbose mode,
-    and file path to save the LDA model, through argument parsing.
+    and weather or not to save the LDA model, through argument parsing.
 
     Parameters:
     ----------
