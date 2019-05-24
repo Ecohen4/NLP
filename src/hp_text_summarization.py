@@ -93,6 +93,12 @@ class TextSummarizer():
         '''
         file_txt = open("../summaries/harry_potter_summaries.txt","w") if save_to_txt == True else False 
 
+        if save_to_txt == True:
+            print('Generating Summaries and Saving to txt File...this should take a few minutes')
+            file_txt.write('Summarizer Used: ' + str(summarizer) + '\n')
+        else:
+            print(f'Summarizer Used: {summarizer}')
+
         if type(summarizer) == str:
             summarizer = self.summarizer_options_dict[summarizer]
 
@@ -100,6 +106,7 @@ class TextSummarizer():
         unique_books = self.df.book_name.unique()
         for book_name in unique_books:
             if save_to_txt == True:
+                print(f'Summarizing "{book_name}"...')
                 file_txt.write('\n')
                 file_txt.write('***** ' + book_name + ' *****')
                 file_txt.write('\n')
@@ -169,7 +176,7 @@ def parse_arguments():
                         default='../data/Harry_Potter_Clean.csv', 
                         help='File path/name of text to summarize')
     parser.add_argument('-summarizer', 
-                        default=TextRankSummarizer, 
+                        default='TextRankSummarizer', 
                         help='Summarizer to use for each chapter summary. \
                               Options are in self.summarizer_options_dict')
     parser.add_argument('-length', 
@@ -189,7 +196,9 @@ def main():
     args = parse_arguments()
     df = load_data(args.filepath)
     text_sum = TextSummarizer(df)
-    text_sum.get_summaries(args.summarizer, args.length, args.savetxt)
+    text_sum.get_summaries(summarizer=args.summarizer,
+                           num_sentences=args.length, 
+                           save_to_txt=args.savetxt)
 
 if __name__ == "__main__":
     main()

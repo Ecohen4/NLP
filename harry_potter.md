@@ -1,4 +1,3 @@
-<!-- ![](images/header.jpg) -->
 <img display=inline-block display=block margin-left=auto margin-right=auto width=100% src=images/header.jpg>
 
 # Harry Potter NLP Technical Exercise
@@ -96,6 +95,7 @@ Example command line execution:
 ```
 python hp_text_summarization.py -filepath '../data/Harry_Potter_Clean.csv' -summarizer TextRankSummarizer -length 5 -savetxt True
 ```
+Note that for this to run correctly, please run from the src folder, and make sure the 'summaries' folder exists.
 
 ## Extractive Methodologies Tested
 I used the following extractive summarization algorithms on chapter 1 of Harry Potter and the Chamber of Secrets. I chose 5 sentences for each summary, as that seemed to be a good balance of description without being too much to read, but as mentioned above, this is a hyperparameter that can be adjusted by the user.
@@ -169,9 +169,9 @@ I used the following extractive summarization algorithms on chapter 1 of Harry P
 - Harry had slipped through Voldemort’s clutches for a second time, but it had been a narrow escape, and even now, weeks later, Harry kept waking in the night, drenched in cold sweat, wondering where Voldemort was now, remembering his livid face, his wide, mad eyes—  Harry suddenly sat bolt upright on the garden bench.
 - Harry knew he shouldn’t have risen to Dudley’s bait, but Dudley had said the very thing Harry had been thinking himself… maybe he didn’t have any friends at Hogwarts…  Wish they could see famous Harry Potter now, he thought savagely as he spread manure on the flower beds, his back aching, sweat running down his face.
 
-Overall, while this is entirely a judgement call, I decided to go with the **TextRank** summarizer as the "default" in the code, as this had a good combination of descriptive yet different sentences, and seemed to represent the chapter as a whole well. That said, as mentioned above, the script I created allows the user to select any of the eight summarization algorithms. 
+Overall, while this is entirely a judgement call, I decided to go with the **TextRank** summarizer as the "default" in the code, as this had a good combination of descriptive yet different sentences, and seemed to represent the chapter as a whole well. That said, as mentioned above, the script I created allows the user to select any of the eight summarization algorithms. KL, Edmundson, and Reduction all produced great results as well (with Reduction literally being exactly the same as TextRank), and SumBasic was easily the worst. 
 
-Either way, this would definitely allow someone who is not familiar with the Harry Potter series of books to get familiar with the content within each chapter very quickly. Also, while this algorithm was unable to create good titles for each chapter (I played around with several options but wasn't happy with any of them), in the 'Next Steps section below, I outline an abstractive methodology that might be a good option for title creation.
+This methodology would definitely allow someone who is not familiar with the Harry Potter series of books to get familiar with the content within each chapter very quickly. Also, while this algorithm was unable to create good titles for each chapter (I played around with several options, but wasn't happy with any of them), in the 'Next Steps' section below, I outline an abstractive methodology that might be a good option for title creation.
 
 [Back to Top](#Table-of-Contents)
 
@@ -240,6 +240,7 @@ Note that the file ```hp_LDA_gensim.py``` is setup to be quite dynamic as well, 
 ```
 python hp_lda_gensim.py -filepath '../data/Harry_Potter_Clean.csv' -numtopics 8 -verbose T -savemodel T
 ```
+Note that for this to run correctly, please run from the src folder, and make sure the 'lda_model' folder exists.
 
 [Back to Top](#Table-of-Contents)
 
