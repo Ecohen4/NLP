@@ -83,7 +83,7 @@ Note the books are in the same order as the .csv source, which is not necessaril
 # Text Summarization
 As mentioned above, I decided to focus on extractive text summarization methodologies, and the python library ```sumy ``` has quite a few options for summarization, is quite easy to use, and produces results quickly. 
 
-I initially decided to try out eight different text summarization techniques, and evaluate them all on the same chapter. In terms of evaluation, since comprehension/summarization is quite difficult to quantify, I read through each summary manually, and made a judgement call as to which one was "best", in order to use that as the default summarizer.
+I initially decided to try out eight different text summarization techniques, and evaluate them all on the same chapter. In terms of evaluation, since comprehension/summarization is quite difficult to quantify, I read through each summary manually, and made a judgment call as to which one was "best", in order to use that as the default summarizer.
 
 However, I set up the file ```hp_text_summarization.py``` to be quite dynamic, as the user can use argument parsing to select the following variables:
   - -filepath: File path to the harry potter dataset (csv)
@@ -225,7 +225,7 @@ stopwords = ['not', 'look', 'do', 'go', 'get', 'would', 'be', 's', 'say', 'see',
 The most important part of any topic model is really "are these topics easily interpretable by humans", in addition to ideally being well differentiated. 
 
 Here is my attempt at manually assigning a title to each topic:
- - **Topic 0:** Voldemnort, Tom Riddle, and the Horcrux
+ - **Topic 0:** Voldemort, Tom Riddle, and the Horcrux
  - **Topic 1:** Wands, Eyes, Voldemort, and Dudley
  - **Topic 2:** The Weasleys and Wizards
  - **Topic 3:** Snape, Sirius, and Dumbledore
@@ -236,7 +236,7 @@ Here is my attempt at manually assigning a title to each topic:
 
 For this model, the "topics" ended up mostly being the important or primary characters within each document, vs. themes or plotlines. Such is the nature of unsupervised models, as in you never know exactly what you'll get, but I believe these results, combined with with the summarization techniques above, will give the user additional useful information about each chapter.
 
-Note that the file ```hp_LDA_gensim.py``` is setup to be quite dynamic as well, and please see the docstring notes for instructions on argument parsing for that file, but here is an example of command-line execution:
+Note that the file ```hp_LDA_gensim.py``` is set up to be quite dynamic as well, and please see the docstring notes for instructions on argument parsing for that file, but here is an example of command-line execution:
 ```
 python hp_lda_gensim.py -filepath '../data/Harry_Potter_Clean.csv' -numtopics 8 -verbose T -savemodel T
 ```
