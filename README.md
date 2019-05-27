@@ -81,3 +81,40 @@ __for chapter summaries:__
 
 __for corpus topics:__
   - run jupyter notebook _topic_modeling.ipynb_
+
+## Strategy:
+
+1. Pre-processing
+  - lemmatize, remove punctuation, remove numbers
+  - remove stop words with spaCy stop word list
+  - remove corpus-specific stop words e.g. 'Mr', 'sir'
+
+2. Vectorize corpus
+  - TF-IDF and TF using sklearn vectorizers
+
+3. Automatically generate summaries and titles for each document
+  - find the 30 'most important' words for each document (highest tfidf score)
+  - parse top words by part-of-speech
+      - p-o-s with spaCy
+      - pull out character names from csv of HP characters
+      - pull out place names from list of HP places 
+  - algorithm for titles and summaries:
+~~~
+[w1...w5] = lists of [main character, action, noun, place, supporting character]
+[t1, t1b, tt[1..3]] = first item from each of [w1...w5]
+
+summary = f'people: {str(w1)}, actions:{str(w2)}, with a {str(w3)}, at {str(w4)}, supporting: {str(w5)}'
+title = f'{t1} and {t1b} {tt[0]} with a {tt[1]} at {tt[2]} with {tt[3]}'
+~~~
+
+4. topic modeling for corpus
+  - find latent topics in the corpus
+      - factor the TFIDF and TF matrices (doc-to-word) into W and H matrices:
+          - W (doc-to-topic)
+          - H (topic-to-word)
+          - methods: LDA and NMF
+  - algorithmically choose the most 'unique' topics to narrow the search
+      - use PCA to diminish the dimensionality of the top 10 topics
+      - compute pairwise cosine distances between all topics
+          - argmax(sum(pairwise cos distance)) ~= most 'unique' topic
+  - inspect the algorithmically chosen topics and a human chooses the most appropriate
