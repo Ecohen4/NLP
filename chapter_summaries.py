@@ -33,7 +33,12 @@ def write_summary(sorted_pos_dict):
     w4 = sorted_pos_dict['places'][:ii[3]]
     w5 = sorted_pos_dict['nouns_p'][- ii[0]:] # supporting chars
     # selections for title
-    t1,t1b = w1[0],w1[1]
+    t1 = w1[0]
+    t1b = ''
+    try:
+        t1b = w1[1]
+    except:
+        pass
     tt = [] # grab first item if it exists
     for x in [w2, w3, w4, w5]:
         try:
@@ -62,8 +67,10 @@ def main(pkl_file, outname):
 
     # create chapter summaries from ranked keywords and their parts of speach
     nlp = spacy.load('en_core_web_lg')
+    print('loading spaCy model...')
     titles = []
     summaries = []
+    # loop through all documents
     for keyword_tups in keyword_l:
         keyword_dict = {x[0]:x[1] for x in keyword_tups}
         keywords_ = keyword_dict.keys()
@@ -112,8 +119,8 @@ def main(pkl_file, outname):
 
     # summary dataset to csv
     summ_df = data[['book_name','chapter','chapter_name','title','summaries']]
-    summ_df.to_csv(f'output/{outname}.csv')
-    print(f'output/{outname}.csv written')
+    summ_df.to_csv(f'output/{outname}')
+    print(f'output/{outname} written')
 
 
 if __name__=='__main__':
@@ -124,7 +131,7 @@ if __name__=='__main__':
     '''
     # handle case if extension not added
     outname = sys.argv[2]
-    if len(os.path.splitext(outname)) == 0:
+    if len(os.path.splitext(outname)[-1]) == 0:
         outname = outname + '.csv'
 
     main(sys.argv[1], outname)
