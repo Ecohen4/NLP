@@ -127,3 +127,9 @@ title = f'{t1} and {t1b} {tt[0]} with a {tt[1]} at {tt[2]} with {tt[3]}'
 
 2. __Corpus topics__
   - _topic_modeling.ipynb_, at the bottom of the notebook
+
+## Note on repo history
+
+  - I initially did all my work in a cloned repo (no fork) so I made this repo on  5/27 so I could make a pull request
+  - Since one point of the exercise is to show commit history, I included my original commit history:
+  - _git_log_orig.txt_

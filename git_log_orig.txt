@@ -1,0 +1,153 @@
+commit a83395fddc629dbde83a72793387912057aad663
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Fri May 24 12:00:04 2019 -0600
+
+    fix readme typo
+
+commit 2c65d8fa74d0121f3d8741f3002d29dd567ea4f6
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Fri May 24 11:58:41 2019 -0600
+
+    update readme and update notebook
+
+commit 57ff636aa38dd2d5f91abf41d5925eddf9e96060
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Fri May 24 10:47:11 2019 -0600
+
+    add title to chapter_summaries.py
+
+commit 8936c2bf0f776d8b54c0092ac8de7f6b1012cf19
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Fri May 24 10:04:30 2019 -0600
+
+    docstrings in engineer features, main() fn
+
+commit 69efc847e344901d20e278c6c0b7922edbd55ad9
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Fri May 24 10:02:13 2019 -0600
+
+    add docstrings, add argparse to clean_data
+
+commit 8cfdc7b7b1a68f13815dad90c1cb844d4cadeda1
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Thu May 23 19:20:38 2019 -0600
+
+    update notebook
+
+commit 248a98ed152738b322acad6b92ac8f4172786ab6
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Thu May 23 19:20:27 2019 -0600
+
+    fix but in data cleaning routine
+
+commit 1a7203f1779ea18954a7c90cbd7bd254c5b3ea1d
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Thu May 23 13:58:28 2019 -0600
+
+    add topic_modeling script to LanguageTools module
+
+commit 57aae78233d6616be64e1ff3fb5780974db9afc5
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Thu May 23 13:58:04 2019 -0600
+
+    add topic_modeling notebook
+
+commit a00c3b831a208672ba46564971bdda6bba3ffe6d
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Thu May 23 13:57:44 2019 -0600
+
+    refactor chapter_summaries and engineer_features
+
+commit 0a8429efd2c7ff1d6ac21da50331a5909e64a095
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Thu May 23 13:57:15 2019 -0600
+
+    update remove list and Readme
+
+commit 7648219c899c8e0ffbea7a7d45d38da1ed32cd6b
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Thu May 23 13:56:48 2019 -0600
+
+    can add remove word list to DocCleaner
+
+commit 4a104ec511a7bcf9059279edf2f36ae670e02a00
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Wed May 22 13:01:08 2019 -0600
+
+    fix mrs bug in chapter_summaries with extra check
+
+commit b22556dd021fdaaba93c568051b5ea47aa6290e7
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Wed May 22 12:50:25 2019 -0600
+
+    add module for metadata about the HP universe
+
+commit 088a89cbd0ee6e1fb2abca4c4d260ec7694b71e8
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Wed May 22 12:50:07 2019 -0600
+
+    add chapter_summaries.py, creates csv of summaries
+
+commit f3570e704923e2c55d5251a176ce8c309ac85400
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Wed May 22 12:49:27 2019 -0600
+
+    can pass n_keywords as cmd line arg to engineer_features
+
+commit 7ad38ba09743991756eef3e4cadc9816acf167e5
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Wed May 22 10:45:02 2019 -0600
+
+    add engineer_features script to engineer a top-n tfidf list for each doc
+
+commit 32937a769543814c4e56bfd7fa4b57d32489a5e8
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Wed May 22 10:44:19 2019 -0600
+
+    add lowercase option to data cleaner
+
+commit df037de5c607d08720c5e148a97a245011c73319
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Tue May 21 12:41:36 2019 -0600
+
+    add LanguageTools module with OOP doc cleaning util
+
+commit ff30abb85c8d2eb947820ce2ae36cfc65d6284b8
+Author: Drew Thayer <thedrewthayer@gmail.com>
+Date:   Tue May 21 11:57:24 2019 -0600
+
+    add installs to readme
+
+commit ec3c148c3dfaf80020c05d65c44aae1ca252abc7
+Author: Elliot Cohen <elliot.cohen@kapost.com>
+Date:   Mon May 20 12:05:09 2019 -0600
+
+    Update README.md
+    
+    Take home assessment guidelines.
+
+commit 6f261e1659566d9c89b5df1e5025cdfb31a915c7
+Author: Elliot Cohen <elliot.cohen@kapost.com>
+Date:   Mon May 20 11:25:28 2019 -0600
+
+    harry potter corpus of text
+
+commit 2e2d23e6aa99fdd9a504e03758352fe51c9b6836
+Author: Elliot Cohen <elliot.cohen@kapost.com>
+Date:   Mon May 20 11:16:45 2019 -0600
+
+    Update README.md
+
+commit cb7adcfce4699f4f4be5a611370402c1a5370e2e
+Author: Elliot Cohen <elliot.cohen@kapost.com>
+Date:   Mon May 20 11:16:19 2019 -0600
+
+    Create README.md
+    
+    Your challenge if you choose to accept.
+
+commit 02556ca208db670b583711a65a82a298e79d4970
+Author: Elliot Cohen <elliot.cohen@kapost.com>
+Date:   Mon May 20 10:03:14 2019 -0600
+
+    Initial commit
