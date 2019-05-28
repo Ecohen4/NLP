@@ -93,11 +93,12 @@ __for corpus topics:__
   - TF-IDF and TF using sklearn vectorizers
 
 3. Automatically generate summaries and titles for each document
-  - find the 30 'most important' words for each document (highest tfidf score)
+  - find keywords
+      - the 30 'most important' words for each document (highest tfidf score)
   - parse top words by part-of-speech
       - p-o-s with spaCy
       - pull out character names from csv of HP characters
-      - pull out place names from list of HP places 
+      - pull out place names from list of HP places
   - algorithm for titles and summaries:
 ~~~
 [w1...w5] = lists of [main character, action, noun, place, supporting character]
@@ -118,3 +119,11 @@ title = f'{t1} and {t1b} {tt[0]} with a {tt[1]} at {tt[2]} with {tt[3]}'
       - compute pairwise cosine distances between all topics
           - argmax(sum(pairwise cos distance)) ~= most 'unique' topic
   - inspect the algorithmically chosen topics and a human chooses the most appropriate
+
+## Results:
+
+1. __Chapter titles and summaries__
+  - _output/final_chapter_summaries.csv_
+
+2. __Corpus topics__
+  - _topic_modeling.ipynb_, at the bottom of the notebook
