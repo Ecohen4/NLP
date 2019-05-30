@@ -1,6 +1,6 @@
 # NLP
 
-Natural Language Processing (NLP) is a sub-field of machine learning that attempts to make human languages (e.g. English, French, Mandarin) machine readable and interpretable. 
+Natural Language Processing (NLP) is a sub-field of machine learning that attempts to make human languages (e.g. English, French, Mandarin) machine readable and interpretable.
 NLP poses notoriously difficult challenges, including the ambiguity of written text, the variability of meaning given context, the use of slang, idioms and abbreviations, the use of metaphor and analogy, and deciphering the true intent of a writer.
 
 The nuts and bolts of NLP include all of the following:
@@ -22,7 +22,7 @@ Assume steps 1 & 2 have been completed for you with a robust ETL pipeline.
 Tackle steps 3, 4 and 5, with emphasis on step 5.  
 The number of topics and how you present your findings is entirely up to you.  
 One catch -- please refrain from using the python library LDAvis -- we want to see how you build from the ground up.  
-That said, you may use any other machine learning or NLP library for underlying computations and/or transfer-learning. 
+That said, you may use any other machine learning or NLP library for underlying computations and/or transfer-learning.
 
 ## Guidelnes
 
@@ -31,7 +31,7 @@ That said, you may use any other machine learning or NLP library for underlying 
 3. Your code should run.
 4. Don't worry about fancy optimizations, edge cases, bells or whistles.
 5. Timebox your efforts to a maximum of 8 hours.
-6. The result of your efforts should be a pull-request to this repository. 
+6. The result of your efforts should be a pull-request to this repository.
 
 ## Considerations
 Finally, one of the most important considerations for a full-stack data scientist is the ability to write production software. The best model is only as good as its deployment. Please use this opportunity to:
@@ -40,3 +40,96 @@ Finally, one of the most important considerations for a full-stack data scientis
 3. Demonstrate software engineering best practices including self-documenting code, test-driven development, atomic-commits and source control.
 
 Oh and have fun!
+
+## installs
+~~~
+$ conda install -c conda-forge spacy
+$ python -m spacy download en
+$ python -m spacy download en_core_web_lg
+~~~
+
+## pipeline
+
+1. run _clean_data.py_
+~~~
+positional arguments:
+  csv         csv file
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -o OUTFILE  output pkl file with .pkl
+~~~
+  - output:
+    - pkl file        pandas df with 'tokens' feature
+
+2. run _engineer_features.py <pkl_file> <n_keywords>_
+    - input:
+      - pkl_file        pkl file, pandas df with 'tokens' feature
+      - n_keywords      int
+
+    - output:
+      - pkl file        pandas df with feature 'keywords'
+
+__for chapter summaries:__
+  - run _chapter_summaries.py <pkl_file>_
+    - input:
+      - pkl_file        pkl_file, pandas df with col 'keywords'
+      - out_csv         str, file to write out
+    - output:
+      - csv file with ['chapter name', 'summary'] for each chapter
+      - saved to /output
+
+__for corpus topics:__
+  - run jupyter notebook _topic_modeling.ipynb_
+
+## Strategy:
+
+1. Pre-processing
+  - lemmatize, remove punctuation, remove numbers
+  - remove stop words with spaCy stop word list
+  - remove corpus-specific stop words e.g. 'Mr', 'sir'
+
+2. Vectorize corpus
+  - TF-IDF and TF using sklearn vectorizers
+
+3. Automatically generate summaries and titles for each document
+  - find keywords
+      - the 30 'most important' words for each document (highest tfidf score)
+  - parse top words by part-of-speech
+      - p-o-s with spaCy
+      - pull out character names from csv of HP characters
+      - pull out place names from list of HP places
+  - algorithm for titles and summaries:
+~~~
+[w1...w5] = lists of [main character, action, noun, place, supporting character]
+[t1, t1b, tt[1..3]] = first item from each of [w1...w5]
+
+summary = f'people: {str(w1)}, actions:{str(w2)}, with a {str(w3)}, at {str(w4)}, supporting: {str(w5)}'
+title = f'{t1} and {t1b} {tt[0]} with a {tt[1]} at {tt[2]} with {tt[3]}'
+~~~
+
+4. topic modeling for corpus
+  - find latent topics in the corpus
+      - factor the TFIDF and TF matrices (doc-to-word) into W and H matrices:
+          - W (doc-to-topic)
+          - H (topic-to-word)
+          - methods: LDA and NMF
+  - algorithmically choose the most 'unique' topics to narrow the search
+      - use PCA to diminish the dimensionality of the top 10 topics
+      - compute pairwise cosine distances between all topics
+          - argmax(sum(pairwise cos distance)) ~= most 'unique' topic
+  - inspect the algorithmically chosen topics and a human chooses the most appropriate
+
+## Results:
+
+1. __Chapter titles and summaries__
+  - _output/final_chapter_summaries.csv_
+
+2. __Corpus topics__
+  - _topic_modeling.ipynb_, at the bottom of the notebook
+
+## Note on repo history
+
+  - I initially did all my work in a cloned repo (no fork) so I made this repo on  5/27 so I could make a pull request
+  - Since one point of the exercise is to show commit history, I included my original commit history:
+  - _git_log_orig.txt_
